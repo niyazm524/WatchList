@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.notifications
+package dev.procrastineyaz.watchlist.ui.feed
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import dev.procrastineyaz.watchlist.R
 
-class NotificationsFragment : Fragment() {
+class FeedFragment : Fragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private lateinit var dashboardViewModel: FeedViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+        dashboardViewModel =
+                ViewModelProviders.of(this).get(FeedViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
+        val textView: TextView = root.findViewById(R.id.text_dashboard)
+        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

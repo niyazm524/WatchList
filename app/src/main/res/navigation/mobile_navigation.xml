@@ -12,14 +12,19 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="dev.procrastineyaz.watchlist.ui.dashboard.DashboardFragment"
+        android:id="@+id/navigation_feed"
+        android:name="dev.procrastineyaz.watchlist.ui.feed.FeedFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="dev.procrastineyaz.watchlist.ui.notifications.NotificationsFragment"
+        android:id="@+id/navigation_trends"
+        android:name="dev.procrastineyaz.watchlist.ui.trends.TrendsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_more"
+        android:name="dev.procrastineyaz.watchlist.ui.more.MoreFragment"
+        android:label="fragment_more"
+        tools:layout="@layout/fragment_more" />
 </navigation>

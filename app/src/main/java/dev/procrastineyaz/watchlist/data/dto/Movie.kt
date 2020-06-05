@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.common.data
+package dev.procrastineyaz.watchlist.data.dto
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

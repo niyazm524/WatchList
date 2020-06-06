@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.feed
+package dev.procrastineyaz.watchlist.ui.main.feed
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.home
+package dev.procrastineyaz.watchlist.ui.main.home
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
 import dev.procrastineyaz.watchlist.R
-import dev.procrastineyaz.watchlist.ui.common.FilmsAdapter
+import dev.procrastineyaz.watchlist.ui.main.common.FilmsAdapter
 import dev.procrastineyaz.watchlist.data.dto.Movie
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.ext.android.get

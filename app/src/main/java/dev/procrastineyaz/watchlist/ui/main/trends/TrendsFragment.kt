@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.trends
+package dev.procrastineyaz.watchlist.ui.main.trends
 
 import android.os.Bundle
 import android.view.LayoutInflater

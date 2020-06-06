@@ -80,6 +80,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit-converters:$retrofit_version"
     implementation "com.squareup.retrofit2:retrofit-adapters:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    // implementation "com.squareup.okhttp3:logging-interceptor:4.7.2"
     // endregion
 
     // region Database dependencies

@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui
+package dev.procrastineyaz.watchlist.ui.main
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView

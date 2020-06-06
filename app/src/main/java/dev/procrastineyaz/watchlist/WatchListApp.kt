@@ -2,6 +2,7 @@ package dev.procrastineyaz.watchlist
 
 import android.app.Application
 import dev.procrastineyaz.watchlist.data.dataModule
+import dev.procrastineyaz.watchlist.services.serviceModules
 import dev.procrastineyaz.watchlist.ui.uiModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -14,7 +15,7 @@ class WatchListApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@WatchListApp)
-            modules(uiModule + dataModule)
+            modules(uiModule + dataModule + serviceModules)
         }
     }
 }

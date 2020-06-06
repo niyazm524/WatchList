@@ -7,24 +7,24 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="dev.procrastineyaz.watchlist.ui.home.HomeFragment"
+        android:name="dev.procrastineyaz.watchlist.ui.main.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_feed"
-        android:name="dev.procrastineyaz.watchlist.ui.feed.FeedFragment"
+        android:name="dev.procrastineyaz.watchlist.ui.main.feed.FeedFragment"
         android:label="@string/title_feed"
         tools:layout="@layout/fragment_feed" />
 
     <fragment
         android:id="@+id/navigation_trends"
-        android:name="dev.procrastineyaz.watchlist.ui.trends.TrendsFragment"
+        android:name="dev.procrastineyaz.watchlist.ui.main.trends.TrendsFragment"
         android:label="@string/title_trends"
         tools:layout="@layout/fragment_trends" />
     <fragment
         android:id="@+id/navigation_more"
-        android:name="dev.procrastineyaz.watchlist.ui.more.MoreFragment"
+        android:name="dev.procrastineyaz.watchlist.ui.main.more.MoreFragment"
         android:label="@string/title_more"
         tools:layout="@layout/fragment_more" />
 </navigation>

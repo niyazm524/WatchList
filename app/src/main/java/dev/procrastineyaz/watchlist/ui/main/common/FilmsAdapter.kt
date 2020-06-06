@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.common
+package dev.procrastineyaz.watchlist.ui.main.common
 
 import android.view.LayoutInflater
 import android.view.View

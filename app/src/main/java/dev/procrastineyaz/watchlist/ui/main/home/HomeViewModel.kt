@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.home
+package dev.procrastineyaz.watchlist.ui.main.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

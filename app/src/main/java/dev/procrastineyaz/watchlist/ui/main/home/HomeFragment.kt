@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.feed
+package dev.procrastineyaz.watchlist.ui.main.home
 
 import android.content.ContentResolver
 import android.net.Uri
@@ -8,27 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import dev.procrastineyaz.watchlist.R
-import dev.procrastineyaz.watchlist.ui.common.FilmsAdapter
-import dev.procrastineyaz.watchlist.ui.common.data.Movie
-import kotlinx.android.synthetic.main.fragment_feed.*
+import dev.procrastineyaz.watchlist.ui.main.common.FilmsAdapter
+import dev.procrastineyaz.watchlist.data.dto.Movie
+import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.android.ext.android.get
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class FeedFragment : Fragment() {
+class HomeFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: FeedViewModel
-    private val filmsAdapter = FilmsAdapter()
+    private val vm: HomeViewModel by viewModel()
+    private val filmsAdapter: FilmsAdapter = get()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        dashboardViewModel =
-            ViewModelProviders.of(this).get(FeedViewModel::class.java)
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? = inflater.inflate(R.layout.fragment_home, container, false)
 
-        return inflater.inflate(R.layout.fragment_feed, container, false)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

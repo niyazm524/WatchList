@@ -10,4 +10,9 @@
     <string name="tab_watched">Watched</string>
     <string name="tab_wish_list">Wish List</string>
     <string name="tab_global">Global</string>
+    <string name="login_button_text">Вход</string>
+    <string name="login_button_loading">Авторизация…</string>
+    <string name="password_hint">Пароль</string>
+    <string name="username_hint">Имя пользователя</string>
+    <string name="register_link">Ещё не зарегистрированы?</string>
 </resources>

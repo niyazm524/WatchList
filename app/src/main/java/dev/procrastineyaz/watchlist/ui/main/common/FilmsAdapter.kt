@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.common
+package dev.procrastineyaz.watchlist.ui.main.common
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.procrastineyaz.watchlist.R
-import dev.procrastineyaz.watchlist.ui.common.data.Movie
+import dev.procrastineyaz.watchlist.data.dto.Movie
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_movie.*
 

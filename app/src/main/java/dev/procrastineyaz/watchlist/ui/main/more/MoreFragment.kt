@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.more
+package dev.procrastineyaz.watchlist.ui.main.more
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

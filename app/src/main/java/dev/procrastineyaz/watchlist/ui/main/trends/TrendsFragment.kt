@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.home
+package dev.procrastineyaz.watchlist.ui.main.trends
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import dev.procrastineyaz.watchlist.R
 
-class HomeFragment : Fragment() {
+class TrendsFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private lateinit var notificationsViewModel: TrendsViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
+        notificationsViewModel =
+                ViewModelProviders.of(this).get(TrendsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_trends, container, false)
+        val textView: TextView = root.findViewById(R.id.text_notifications)
+        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root

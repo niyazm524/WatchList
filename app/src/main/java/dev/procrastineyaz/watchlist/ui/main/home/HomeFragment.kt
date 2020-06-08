@@ -1,24 +1,20 @@
 package dev.procrastineyaz.watchlist.ui.main.home
 
-import android.content.ContentResolver
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.fragment.app.Fragment
+import com.google.android.material.tabs.TabLayoutMediator
 import dev.procrastineyaz.watchlist.R
-import dev.procrastineyaz.watchlist.ui.main.common.FilmsAdapter
-import dev.procrastineyaz.watchlist.data.dto.Movie
+import dev.procrastineyaz.watchlist.ui.main.common.FilmPagesAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class HomeFragment : Fragment() {
 
     private val vm: HomeViewModel by viewModel()
-    private val filmsAdapter: FilmsAdapter = get()
+    private lateinit var filmPagesAdapter: FilmPagesAdapter
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -29,28 +25,13 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        rv_movies.apply {
-            adapter = filmsAdapter
-        }
-        filmsAdapter.submitList(
-            listOf(
-                Movie(
-                    id = 1,
-                    title = "Остров проклятых",
-                    titleGlobal = "Shutter island (2009)",
-                    rating = 9.3f,
-                    note = "ДиКаприо сходит с ума на острове",
-                    posterUri = getUriOfDrawable(R.drawable.film_1).toString()
-                )
+        filmPagesAdapter = FilmPagesAdapter(this)
+        vp_movies_lists.adapter = filmPagesAdapter
+        TabLayoutMediator(tabLayout, vp_movies_lists) { tab, position ->
+            tab.text = getString(
+                if(position == 0) R.string.tab_watched else R.string.tab_wish_list
             )
-        )
+        }.attach()
     }
-
-    private fun getUriOfDrawable(@DrawableRes drawableId: Int): Uri = Uri.Builder()
-        .scheme(ContentResolver.SCHEME_ANDROID_RESOURCE)
-        .authority(resources.getResourcePackageName(drawableId))
-        .appendPath(resources.getResourceTypeName(drawableId))
-        .appendPath(resources.getResourceEntryName(drawableId))
-        .build()
 
 }

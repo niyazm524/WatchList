@@ -15,4 +15,8 @@
     <string name="password_hint">Пароль</string>
     <string name="username_hint">Имя пользователя</string>
     <string name="register_link">Ещё не зарегистрированы?</string>
+    <string name="category_all">Все</string>
+    <string name="category_films">Фильмы</string>
+    <string name="category_series">Сериалы</string>
+    <string name="category_anime">Аниме</string>
 </resources>

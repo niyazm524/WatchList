@@ -19,4 +19,8 @@
     <string name="category_films">Фильмы</string>
     <string name="category_series">Сериалы</string>
     <string name="category_anime">Аниме</string>
+    <string name="register">Регистрация</string>
+    <string name="email_hint">Email</string>
+    <string name="password_repeat_hint">Повторите пароль</string>
+    <string name="register_button_text">Зарегистрироваться</string>
 </resources>

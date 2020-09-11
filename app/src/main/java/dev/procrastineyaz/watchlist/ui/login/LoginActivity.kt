@@ -10,6 +10,7 @@ import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputLayout
 import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.ui.main.MainActivity
+import dev.procrastineyaz.watchlist.ui.register.RegisterActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -21,6 +22,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
 
         btn_login.setOnClickListener { vm.onLoginClick() }
+        tv_register.setOnClickListener {
+            startActivityForResult(
+                Intent(this, RegisterActivity::class.java),
+                REQUEST_OPEN_REGISTER
+            )
+        }
 
         et_login.doOnTextChanged { text, _, _, _ ->
             vm.onLoginChanged(text.toString())
@@ -72,10 +79,24 @@ class LoginActivity : AppCompatActivity() {
         btn_login.text = getString(
             if (isShowing) R.string.login_button_loading else R.string.login_button_text
         )
-        progressBar.visibility = if(isShowing) View.VISIBLE else View.GONE
+        progressBar.visibility = if (isShowing) View.VISIBLE else View.GONE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_OPEN_REGISTER && resultCode == RegisterActivity.RESULT_REGISTERED && data != null) {
+            val username = requireNotNull(data.getStringExtra("username"))
+            val password = requireNotNull(data.getStringExtra("password"))
+            et_login.setText(username)
+            et_password.setText(password)
+        }
     }
 
     private fun goToNextActivity() = startActivity(Intent(this, MainActivity::class.java).apply {
         addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     }).also { finish() }
+
+    companion object {
+        const val REQUEST_OPEN_REGISTER = 34
+    }
 }

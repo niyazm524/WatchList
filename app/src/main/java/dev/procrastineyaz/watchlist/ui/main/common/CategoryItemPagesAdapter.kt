@@ -6,12 +6,15 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dev.procrastineyaz.watchlist.ui.main.movies.MoviesListFragment
 
-class FilmPagesAdapter(fragment: Fragment) :
+class CategoryItemPagesAdapter(
+    fragment: Fragment,
+    private val itemsProvider: MoviesListFragment.Companion.Providers
+) :
     FragmentStateAdapter(fragment) {
 
-    override fun createFragment(position: Int): Fragment = when(position) {
-        0 -> MoviesListFragment.newInstance(seen = true)
-        else -> MoviesListFragment.newInstance(seen = false)
+    override fun createFragment(position: Int): Fragment = when (position) {
+        0 -> MoviesListFragment.newInstance(seen = true, provider = itemsProvider)
+        else -> MoviesListFragment.newInstance(seen = false, provider = itemsProvider)
     }
 
     override fun getItemCount(): Int = 2

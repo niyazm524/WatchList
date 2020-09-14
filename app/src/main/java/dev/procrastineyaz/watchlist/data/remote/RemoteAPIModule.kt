@@ -28,5 +28,6 @@ val remoteAPIModule = module {
             .build()
     }
 
-    factory<UsersAPIService> { get<Retrofit>().create(UsersAPIService::class.java) }
+    single<UsersAPIService> { get<Retrofit>().create(UsersAPIService::class.java) }
+    single<ItemsAPIService> { get<Retrofit>().create(ItemsAPIService::class.java) }
 }

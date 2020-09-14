@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import dev.procrastineyaz.watchlist.R
-import dev.procrastineyaz.watchlist.data.dto.Movie
+import dev.procrastineyaz.watchlist.data.dto.Item
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_movie.*
 
-class FilmsAdapter : ListAdapter<Movie, MovieViewHolder>(MoviesDiffCallback()) {
+class ItemsAdapter : ListAdapter<Item, MovieViewHolder>(MoviesDiffCallback()) {
 
     init {
         setHasStableIds(true)
@@ -35,19 +35,19 @@ class FilmsAdapter : ListAdapter<Movie, MovieViewHolder>(MoviesDiffCallback()) {
 class MovieViewHolder(override val containerView: View) :
     RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bindTo(movie: Movie) {
-        tv_title.text = movie.title
-        tv_title_global.text = movie.titleGlobal
-        tv_rating.text = movie.rating.toString()
-        tv_note.text = "\uD83D\uDCDD\t" + movie.note
+    fun bindTo(item: Item) {
+        tv_title.text = item.nameRu
+        tv_title_global.text = item.nameEn
+        tv_rating.text = item.rating.toString()
+        tv_note.text = "\uD83D\uDCDD\t" + item.note
         Glide
             .with(containerView)
-            .load(movie.posterUri)
+            .load(item.posterUrl)
             .into(iv_poster)
     }
 }
 
-class MoviesDiffCallback : DiffUtil.ItemCallback<Movie>() {
-    override fun areItemsTheSame(oldItem: Movie, newItem: Movie) = oldItem.id == newItem.id
-    override fun areContentsTheSame(oldItem: Movie, newItem: Movie) = oldItem == newItem
+class MoviesDiffCallback : DiffUtil.ItemCallback<Item>() {
+    override fun areItemsTheSame(oldItem: Item, newItem: Item) = oldItem.id == newItem.id
+    override fun areContentsTheSame(oldItem: Item, newItem: Item) = oldItem == newItem
 }

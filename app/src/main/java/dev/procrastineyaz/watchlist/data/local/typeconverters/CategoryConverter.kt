@@ -1,7 +1,7 @@
 package dev.procrastineyaz.watchlist.data.local.typeconverters
 
 import androidx.room.TypeConverter
-import dev.procrastineyaz.watchlist.data.local.entities.Category
+import dev.procrastineyaz.watchlist.data.dto.Category
 
 class CategoryConverter {
     @TypeConverter

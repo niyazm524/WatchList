@@ -1,13 +1,12 @@
 package dev.procrastineyaz.watchlist.data.local.entities
 
-import androidx.room.Entity
-import androidx.room.Index
-import androidx.room.PrimaryKey
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
 import java.util.*
 
-@Entity(tableName = "items", indices = [Index(value = ["seen"], name = "seen_index")])
+@Entity
 data class ItemEntity(
-    @PrimaryKey(autoGenerate = false) val id: Long,
+    @Id var id: Long = 0,
     val nameRu: String,
     val nameEn: String,
     val description: String,

@@ -19,3 +19,9 @@ data class Item(
     val seen: Boolean,
     val posterUrl: String?
 ) : Parcelable
+
+data class ItemsQuery(
+    val category: Category,
+    val filter: SeenParameter,
+    val search: String?
+)

@@ -42,7 +42,7 @@ class MoviesListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         rv_movies.adapter = itemsAdapter
-        provider.getItemsLiveData(seen).observe(viewLifecycleOwner, Observer { items ->
+        provider.getItemsLiveData(seen).observe(viewLifecycleOwner, { items ->
             itemsAdapter.submitList(items)
         })
     }

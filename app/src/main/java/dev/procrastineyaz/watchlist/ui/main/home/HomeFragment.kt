@@ -1,19 +1,25 @@
 package dev.procrastineyaz.watchlist.ui.main.home
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.procrastineyaz.watchlist.R
+import dev.procrastineyaz.watchlist.data.dto.Category
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.databinding.FragmentHomeBinding
+import dev.procrastineyaz.watchlist.ui.helpers.reduceDragSensitivity
 import dev.procrastineyaz.watchlist.ui.main.common.CategoryItemPagesAdapter
 import dev.procrastineyaz.watchlist.ui.main.movies.MoviesListFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+@ExperimentalCoroutinesApi
 class HomeFragment : Fragment() {
 
     private val vm: HomeViewModel by viewModel()
@@ -43,6 +49,27 @@ class HomeFragment : Fragment() {
             )
             vm.setCurrentTab(if (position == 0) SeenParameter.SEEN else SeenParameter.UNSEEN)
         }.attach()
+        vp_movies_lists.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageScrollStateChanged(state: Int) {
+                if(state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                    fab_add.hide()
+                } else if(
+                    (state == ViewPager2.SCROLL_STATE_SETTLING || state == ViewPager2.SCROLL_STATE_IDLE)
+                ) {
+                    fab_add.show()
+                }
+            }
+        })
+        vp_movies_lists.reduceDragSensitivity(6)
+        cg_categories.setOnCheckedChangeListener { _, checkedId ->
+            vm.selectCategory(when(checkedId) {
+                R.id.chip_films -> Category.FILM
+                R.id.chip_series -> Category.SERIES
+                R.id.chip_anime -> Category.ANIME
+                else -> Category.UNKNOWN
+            })
+        }
+        cg_categories.check(R.id.chip_films)
     }
 
 }

@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val uiModule = module {
     viewModel { FeedViewModel() }
-    viewModel { HomeViewModel() }
+    viewModel { HomeViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { RegisterViewModel(get()) }
     factory { ItemsAdapter() }

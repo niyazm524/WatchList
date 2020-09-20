@@ -10,19 +10,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 val remoteAPIModule = module {
     factory<OkHttpClient> {
         OkHttpClient.Builder()
-            //.addInterceptor(get<AuthInterceptor>())
+            .addInterceptor(get<AuthInterceptor>())
             .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
             .build()
     }
 
     factory<GsonConverterFactory> { GsonConverterFactory.create() }
 
-    factory { AuthInterceptor() }
+    factory { AuthInterceptor(get()) }
 
     single<Retrofit> {
         Retrofit.Builder()
             .baseUrl("http://192.168.0.28:3000/api/")
-            //.baseUrl("https://watchlist.procrastineyaz.dev/api/")
+//            .baseUrl("https://watchlist.procrastineyaz.dev/api/")
             .client(get<OkHttpClient>())
             .addConverterFactory(get<GsonConverterFactory>())
             .build()

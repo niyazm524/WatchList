@@ -1,6 +1,5 @@
 package dev.procrastineyaz.watchlist.ui.main.home
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +11,9 @@ import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.Category
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.databinding.FragmentHomeBinding
+import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
 import dev.procrastineyaz.watchlist.ui.helpers.reduceDragSensitivity
+import dev.procrastineyaz.watchlist.ui.main.common.AddItemDialogFragment
 import dev.procrastineyaz.watchlist.ui.main.common.CategoryItemPagesAdapter
 import dev.procrastineyaz.watchlist.ui.main.movies.MoviesListFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -37,7 +38,6 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryItemPagesAdapter =
@@ -51,9 +51,9 @@ class HomeFragment : Fragment() {
         }.attach()
         vp_movies_lists.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
-                if(state == ViewPager2.SCROLL_STATE_DRAGGING) {
+                if (state == ViewPager2.SCROLL_STATE_DRAGGING) {
                     fab_add.hide()
-                } else if(
+                } else if (
                     (state == ViewPager2.SCROLL_STATE_SETTLING || state == ViewPager2.SCROLL_STATE_IDLE)
                 ) {
                     fab_add.show()
@@ -62,14 +62,30 @@ class HomeFragment : Fragment() {
         })
         vp_movies_lists.reduceDragSensitivity(6)
         cg_categories.setOnCheckedChangeListener { _, checkedId ->
-            vm.selectCategory(when(checkedId) {
-                R.id.chip_films -> Category.FILM
-                R.id.chip_series -> Category.SERIES
-                R.id.chip_anime -> Category.ANIME
-                else -> Category.UNKNOWN
-            })
+            vm.selectCategory(
+                when (checkedId) {
+                    R.id.chip_films -> Category.FILM
+                    R.id.chip_series -> Category.SERIES
+                    R.id.chip_anime -> Category.ANIME
+                    else -> Category.UNKNOWN
+                }
+            )
         }
         cg_categories.check(R.id.chip_films)
+        fab_add.setOnClickListener { vm.onAddNewItem() }
+        vm.addItemModalState.observe(viewLifecycleOwner) { state ->
+            if(state is AddItemModalState.Opened) {
+                openAddItemDialog(state.category, state.seen)
+            }
+        }
+    }
+
+    private fun openAddItemDialog(category: Category, seen: Boolean) {
+        val dialog = AddItemDialogFragment.newInstance(category, seen)
+        dialog.onNewItemAdded = { _ ->
+            vm.onNewItemAdded()
+        }
+        dialog.show(childFragmentManager, "ADD_ITEM")
     }
 
 }

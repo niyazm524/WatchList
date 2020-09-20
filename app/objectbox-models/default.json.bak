@@ -12,7 +12,7 @@
           "id": "1:4675074658136973453",
           "name": "id",
           "type": 6,
-          "flags": 129
+          "flags": 4
         },
         {
           "id": "2:7908239487486062660",
@@ -71,6 +71,12 @@
           "id": "12:6906883921363103640",
           "name": "posterUrl",
           "type": 9
+        },
+        {
+          "id": "13:7120889112047053447",
+          "name": "_id",
+          "type": 6,
+          "flags": 1
         }
       ],
       "relations": []
@@ -84,9 +90,7 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [
-    7120889112047053447
-  ],
+  "retiredPropertyUids": [],
   "retiredRelationUids": [],
   "version": 1
 }

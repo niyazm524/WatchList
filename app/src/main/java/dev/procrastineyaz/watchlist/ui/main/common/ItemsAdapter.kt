@@ -3,16 +3,20 @@ package dev.procrastineyaz.watchlist.ui.main.common
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.Item
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_movie.*
 
-class ItemsAdapter : ListAdapter<Item, MovieViewHolder>(MoviesDiffCallback()) {
+typealias ItemClickListener = (item: Item) -> Unit
+
+class ItemsAdapter : PagedListAdapter<Item, MovieViewHolder>(MoviesDiffCallback()) {
+
+    var onItemClickListener: ItemClickListener? = null
 
     init {
         setHasStableIds(true)
@@ -24,10 +28,10 @@ class ItemsAdapter : ListAdapter<Item, MovieViewHolder>(MoviesDiffCallback()) {
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        holder.bindTo(getItem(position))
+        getItem(position)?.let { holder.bindTo(it, onItemClickListener) }
     }
 
-    override fun getItemId(position: Int) = getItem(position).id
+    override fun getItemId(position: Int) = getItem(position)?.id ?: -1
 
 }
 
@@ -35,15 +39,30 @@ class ItemsAdapter : ListAdapter<Item, MovieViewHolder>(MoviesDiffCallback()) {
 class MovieViewHolder(override val containerView: View) :
     RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bindTo(item: Item) {
+    fun bindTo(item: Item, onItemClickListener: ItemClickListener? = null) {
+        if (onItemClickListener != null) {
+            cv_item_root.setOnClickListener { onItemClickListener(item) }
+        }
         tv_title.text = item.nameRu
         tv_title_global.text = item.nameEn
-        tv_rating.text = item.rating.toString()
-        tv_note.text = "\uD83D\uDCDD\t" + item.note
-        Glide
-            .with(containerView)
-            .load(item.posterUrl)
-            .into(iv_poster)
+        if(item.rating.isNullOrEmpty()) {
+            tv_rating.visibility = View.INVISIBLE
+        } else {
+            tv_rating.visibility = View.VISIBLE
+            tv_rating.text = item.rating
+        }
+
+        if (item.note != null) {
+            tv_note.text = "\uD83D\uDCDD\t" + item.note
+        } else {
+            tv_note.text = item.description
+        }
+
+        iv_poster.load(item.posterUrl) {
+            placeholder(R.drawable.no_movie_poster)
+            memoryCacheKey(item.id.toString())
+            crossfade(true)
+        }
     }
 }
 

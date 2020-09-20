@@ -10,12 +10,12 @@ import dev.procrastineyaz.watchlist.data.dto.Item
 import dev.procrastineyaz.watchlist.data.dto.ItemsQuery
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.data.repositories.ItemsRepository
+import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapterProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
@@ -25,6 +25,9 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
     private var currentTab: SeenParameter = SeenParameter.SEEN
     private val _seenItems = MutableLiveData<PagedList<Item>>()
     private val _unseenItems = MutableLiveData<PagedList<Item>>()
+    private val _isAddItemOpened = MutableLiveData(false)
+    private val _addItemModalState = MutableLiveData<AddItemModalState>(AddItemModalState.Closed)
+    val addItemModalState: LiveData<AddItemModalState> = _addItemModalState
     private val searchPhrase: String? = null
     private var category: Category = Category.UNKNOWN
 
@@ -40,7 +43,7 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
     }
 
     private fun invalidateItems() = viewModelScope.launch {
-        itemsRepository.getItems(ItemsQuery(category, currentTab, searchPhrase))
+        itemsRepository.getItems(ItemsQuery(category, currentTab, searchPhrase), viewModelScope)
             .flowOn(Dispatchers.IO)
             .collect {
                 getCurrentTabLiveData().postValue(it)
@@ -49,6 +52,19 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
 
     fun selectCategory(category: Category) {
         this.category = category
+        invalidateItems()
+    }
+
+    fun onAddNewItem() {
+        _addItemModalState.postValue(
+            AddItemModalState.Opened(
+                category,
+                currentTab == SeenParameter.SEEN
+            )
+        )
+    }
+
+    fun onNewItemAdded() {
         invalidateItems()
     }
 

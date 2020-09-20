@@ -6,14 +6,14 @@ import java.util.*
 
 @Entity
 data class ItemEntity(
-    @Id var id: Long = 0,
+    @Id(assignable = true) var id: Long = 0,
     val nameRu: String,
     val nameEn: String,
     val description: String,
-    val year: Int?,
+    val year: String?,
     val categoryId: Int,
     val createdAt: Date,
-    val rating: Float,
+    val rating: String?,
     val userRating: Float?,
     val note: String?,
     val seen: Boolean,

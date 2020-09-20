@@ -10,13 +10,13 @@ data class Item(
     val nameRu: String,
     val nameEn: String,
     val description: String,
-    val year: Int?,
+    val year: String?,
     val categoryId: Int,
-    val createdAt: Date,
-    val rating: Float,
+    val createdAt: Date?,
+    val rating: String?,
     val userRating: Float?,
     val note: String?,
-    val seen: Boolean,
+    val seen: Boolean?,
     val posterUrl: String?
 ) : Parcelable
 

@@ -1,5 +1,6 @@
 package dev.procrastineyaz.watchlist.data.local.dao
 
+import android.util.Log
 import dev.procrastineyaz.watchlist.data.dto.Category
 import dev.procrastineyaz.watchlist.data.dto.ItemsQuery
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
@@ -12,6 +13,7 @@ import io.objectbox.query.Query
 
 class ItemsDao(private val itemsBox: Box<ItemEntity>) {
     fun getItems(query: ItemsQuery): Query<ItemEntity> = itemsBox.query {
+        Log.w("LOAD", query.toString())
         if (query.category !== Category.UNKNOWN) {
             equal(ItemEntity_.categoryId, query.category.value)
         }
@@ -22,6 +24,12 @@ class ItemsDao(private val itemsBox: Box<ItemEntity>) {
             contains(ItemEntity_.nameRu, query.search)
                 .or().contains(ItemEntity_.nameEn, query.search)
         }
+    }
+
+    fun insertItems(items: List<ItemEntity>) {
+        itemsBox.put(items)
+        val all = itemsBox.all
+        Log.w("DB", all.toString())
     }
 
 }

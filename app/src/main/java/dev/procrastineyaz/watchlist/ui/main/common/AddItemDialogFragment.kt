@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -100,12 +101,11 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
     }
 
     companion object {
-        fun newInstance(category: Category, seen: Boolean) =
-            AddItemDialogFragment().also {
-                it.arguments?.apply {
-                    putInt("category", category.value)
-                    putBoolean("seen", seen)
-                }
-            }
+        fun newInstance(category: Category, seen: Boolean) = AddItemDialogFragment().apply {
+            arguments = bundleOf(
+                "category" to category.value,
+                "seen" to seen,
+            )
+        }
     }
 }

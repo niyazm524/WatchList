@@ -28,8 +28,6 @@ class ItemsDao(private val itemsBox: Box<ItemEntity>) {
 
     fun insertItems(items: List<ItemEntity>) {
         itemsBox.put(items)
-        val all = itemsBox.all
-        Log.w("DB", all.toString())
     }
 
 }

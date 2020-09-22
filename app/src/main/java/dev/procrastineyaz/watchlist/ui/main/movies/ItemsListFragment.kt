@@ -14,11 +14,11 @@ import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapter
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapterProvider
 import dev.procrastineyaz.watchlist.ui.main.home.HomeViewModel
-import kotlinx.android.synthetic.main.movies_list_fragment.*
+import kotlinx.android.synthetic.main.items_list_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getSharedViewModel
 
-class MoviesListFragment : Fragment() {
+class ItemsListFragment : Fragment() {
 
     private lateinit var provider: ItemsAdapterProvider
     private val itemsAdapter: ItemsAdapter = get()
@@ -35,14 +35,19 @@ class MoviesListFragment : Fragment() {
         provider = when (providerName) {
             Providers.HomeVM -> getSharedViewModel<HomeViewModel>()
         }
-        return inflater.inflate(R.layout.movies_list_fragment, container, false)
+        return inflater.inflate(R.layout.items_list_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         rv_movies.adapter = itemsAdapter
         provider.getItemsLiveData(seen).observe(viewLifecycleOwner, { items ->
             itemsAdapter.submitList(items)
+            setEmptyListMessageShowing(items.isEmpty())
         })
+    }
+
+    private fun setEmptyListMessageShowing(showing: Boolean = true) {
+        tv_empty_list.visibility = if(showing) View.VISIBLE else View.GONE
     }
 
     private fun getUriOfDrawable(@DrawableRes drawableId: Int): Uri = Uri.Builder()
@@ -53,7 +58,7 @@ class MoviesListFragment : Fragment() {
         .build()
 
     companion object {
-        fun newInstance(seen: Boolean, provider: Providers) = MoviesListFragment().apply {
+        fun newInstance(seen: Boolean, provider: Providers) = ItemsListFragment().apply {
             arguments = bundleOf("seen" to seen, "provider" to provider.name)
         }
 

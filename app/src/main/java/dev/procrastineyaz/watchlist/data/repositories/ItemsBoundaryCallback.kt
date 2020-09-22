@@ -19,18 +19,19 @@ class ItemsBoundaryCallback(
 ) : PagedList.BoundaryCallback<Item>() {
     private var count: Int = -1
     private var isRunning: Boolean = false
-    private var page = 1
+    private var page = 0
 
     override fun onZeroItemsLoaded() {
         if(count == 0 || isRunning) { return }
         isRunning = true
         scope.launch(Dispatchers.IO) {
-            invalidateItems(page = 1)
+            invalidateItems(page = ++page)
         }
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: Item) {
         if(isRunning) return
+        if(count != -1 && page * 20 < count) return
         scope.launch(Dispatchers.IO) {
             invalidateItems(page = ++page)
         }

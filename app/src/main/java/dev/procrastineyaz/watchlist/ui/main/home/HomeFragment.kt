@@ -15,7 +15,7 @@ import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
 import dev.procrastineyaz.watchlist.ui.helpers.reduceDragSensitivity
 import dev.procrastineyaz.watchlist.ui.main.common.AddItemDialogFragment
 import dev.procrastineyaz.watchlist.ui.main.common.CategoryItemPagesAdapter
-import dev.procrastineyaz.watchlist.ui.main.movies.MoviesListFragment
+import dev.procrastineyaz.watchlist.ui.main.movies.ItemsListFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -41,7 +41,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         categoryItemPagesAdapter =
-            CategoryItemPagesAdapter(this, MoviesListFragment.Companion.Providers.HomeVM)
+            CategoryItemPagesAdapter(this, ItemsListFragment.Companion.Providers.HomeVM)
         vp_movies_lists.adapter = categoryItemPagesAdapter
         TabLayoutMediator(tabLayout, vp_movies_lists) { tab, position ->
             tab.text = getString(

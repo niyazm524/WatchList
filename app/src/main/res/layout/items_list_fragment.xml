@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.main.movies.MoviesListFragment">
+    tools:context=".ui.main.movies.ItemsListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_movies"
@@ -17,5 +17,17 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="1"
         tools:listitem="@layout/item_movie" />
+
+    <TextView
+        android:id="@+id/tv_empty_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_items_message"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rv_movies"
+        app:layout_constraintVertical_bias="0.02" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

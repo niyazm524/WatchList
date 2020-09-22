@@ -23,4 +23,5 @@
     <string name="email_hint">Email</string>
     <string name="password_repeat_hint">Повторите пароль</string>
     <string name="register_button_text">Зарегистрироваться</string>
+    <string name="no_items_message">В этой категории ещё нет элементов</string>
 </resources>

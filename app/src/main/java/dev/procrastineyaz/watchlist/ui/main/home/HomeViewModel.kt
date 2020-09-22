@@ -9,12 +9,9 @@ import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.data.repositories.ItemsRepository
 import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapterProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
@@ -27,23 +24,27 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
     val addItemModalState: LiveData<AddItemModalState> = _addItemModalState
     private val searchPhrase: String? = null
     private var category: Category = Category.UNKNOWN
+    private var fetchingJob: Job? = null
 
     fun setCurrentTab(tab: SeenParameter) {
         currentTab = tab
     }
 
-    private fun getCurrentTabLiveData() =
-        if (currentTab == SeenParameter.SEEN) _seenItems else _unseenItems
+    private fun getCurrentTabLiveData(seen: SeenParameter = currentTab) =
+        if (seen == SeenParameter.SEEN) _seenItems else _unseenItems
 
     override fun getItemsLiveData(seen: SeenParameter): LiveData<PagedList<Item>> {
-        return getCurrentTabLiveData()
+        return getCurrentTabLiveData(seen)
     }
 
-    private fun invalidateItems() = viewModelScope.launch {
-        val seen = async { invalidateList(seen = SeenParameter.SEEN, _seenItems) }
-        val unseen = async { invalidateList(seen = SeenParameter.UNSEEN, _unseenItems) }
-        seen.await()
-        unseen.await()
+    private fun invalidateItems() {
+        fetchingJob?.cancel("Running another fetch session")
+        fetchingJob = viewModelScope.launch {
+            val seen = async { invalidateList(seen = SeenParameter.SEEN, _seenItems) }
+            val unseen = async { invalidateList(seen = SeenParameter.UNSEEN, _unseenItems) }
+            seen.await()
+            unseen.await()
+        }
     }
 
     private suspend fun invalidateList(
@@ -53,7 +54,7 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
         itemsRepository.getItems(ItemsQuery(category, seen, searchPhrase), viewModelScope)
             .asFlow()
             .flowOn(Dispatchers.IO)
-            .collect {
+            .collectLatest {
                 toLiveData.postValue(it)
             }
     }

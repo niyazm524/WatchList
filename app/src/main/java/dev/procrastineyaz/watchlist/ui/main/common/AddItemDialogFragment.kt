@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -29,7 +30,10 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
 
     private val addingObserver = Observer<Result<Any?, Throwable>> { result ->
         when (result) {
-            is Result.Success -> onNewItemAdded?.invoke().also { dismiss() }
+            is Result.Success -> setFragmentResult(
+                "adding",
+                bundleOf("succeed" to true)
+            ).also { dismiss() }
             is Result.Error -> Toast.makeText(
                 activity,
                 "Ошибка добавления: ${result.value.localizedMessage}",

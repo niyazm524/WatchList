@@ -5,6 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.procrastineyaz.watchlist.R
@@ -13,7 +15,6 @@ import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.databinding.FragmentHomeBinding
 import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
 import dev.procrastineyaz.watchlist.ui.helpers.reduceDragSensitivity
-import dev.procrastineyaz.watchlist.ui.main.common.AddItemDialogFragment
 import dev.procrastineyaz.watchlist.ui.main.common.CategoryItemPagesAdapter
 import dev.procrastineyaz.watchlist.ui.main.movies.ItemsListFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -81,14 +82,16 @@ class HomeFragment : Fragment() {
                 openAddItemDialog(state.category, state.seen)
             }
         }
+        setFragmentResultListener("adding") { _, result ->
+            if(result.getBoolean("succeed", false)) {
+                vm.onNewItemAdded()
+            }
+        }
     }
 
     private fun openAddItemDialog(category: Category, seen: Boolean) {
-        val dialog = AddItemDialogFragment.newInstance(category, seen)
-        dialog.onNewItemAdded = {
-            vm.onNewItemAdded()
-        }
-        dialog.show(childFragmentManager, "ADD_ITEM")
+        val action = HomeFragmentDirections.actionNavigationHomeToNavigationAddItem(category, seen)
+        findNavController().navigate(action)
     }
 
 }

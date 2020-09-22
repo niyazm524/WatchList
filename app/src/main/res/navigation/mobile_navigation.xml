@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="dev.procrastineyaz.watchlist.ui.main.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_add_item"
+            app:destination="@id/navigation_add_item" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_feed"
@@ -27,4 +31,17 @@
         android:name="dev.procrastineyaz.watchlist.ui.main.more.MoreFragment"
         android:label="@string/title_more"
         tools:layout="@layout/fragment_more" />
+    <dialog
+        android:id="@+id/navigation_add_item"
+        android:name="dev.procrastineyaz.watchlist.ui.main.common.AddItemDialogFragment"
+        tools:layout="@layout/fragment_add_item"
+        android:label="AddItemDialogFragment" >
+        <argument
+            android:name="category"
+            app:argType="dev.procrastineyaz.watchlist.data.dto.Category"
+            android:defaultValue="UNKNOWN" />
+        <argument
+            android:name="seen"
+            app:argType="boolean" />
+    </dialog>
 </navigation>

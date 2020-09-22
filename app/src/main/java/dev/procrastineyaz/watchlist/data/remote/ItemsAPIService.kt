@@ -3,7 +3,6 @@ package dev.procrastineyaz.watchlist.data.remote
 import dev.procrastineyaz.watchlist.data.remote.dto.ItemsListResponse
 import dev.procrastineyaz.watchlist.data.remote.dto.ItemsSearchResponseDto
 import dev.procrastineyaz.watchlist.data.remote.dto.NewItemDto
-import dev.procrastineyaz.watchlist.data.remote.dto.RemoteItem
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -21,7 +20,7 @@ interface ItemsAPIService {
     ): ItemsListResponse
 
     @POST("items")
-    suspend fun addItem(@Body newItem: NewItemDto): RemoteItem
+    suspend fun addItem(@Body newItem: NewItemDto)
 
     @GET("kinopoisk/search")
     suspend fun searchItems(

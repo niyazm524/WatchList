@@ -1,8 +1,10 @@
 package dev.procrastineyaz.watchlist.data.remote
 
 import dev.procrastineyaz.watchlist.data.remote.interceptors.AuthInterceptor
+import dev.procrastineyaz.watchlist.data.remote.interceptors.UnauthorizedInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -11,6 +13,7 @@ val remoteAPIModule = module {
     factory<OkHttpClient> {
         OkHttpClient.Builder()
             .addInterceptor(get<AuthInterceptor>())
+            .addInterceptor(get<UnauthorizedInterceptor>())
             .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
             .build()
     }
@@ -18,6 +21,7 @@ val remoteAPIModule = module {
     factory<GsonConverterFactory> { GsonConverterFactory.create() }
 
     factory { AuthInterceptor(get()) }
+    single { UnauthorizedInterceptor(get(), androidApplication()) }
 
     single<Retrofit> {
         Retrofit.Builder()

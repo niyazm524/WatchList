@@ -18,12 +18,12 @@ import dev.procrastineyaz.watchlist.ui.main.common.CategoryItemPagesAdapter
 import dev.procrastineyaz.watchlist.ui.main.movies.MoviesListFragment
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 @ExperimentalCoroutinesApi
 class HomeFragment : Fragment() {
 
-    private val vm: HomeViewModel by viewModel()
+    private val vm: HomeViewModel by sharedViewModel()
     private lateinit var categoryItemPagesAdapter: CategoryItemPagesAdapter
 
     override fun onCreateView(
@@ -47,7 +47,6 @@ class HomeFragment : Fragment() {
             tab.text = getString(
                 if (position == 0) R.string.tab_watched else R.string.tab_wish_list
             )
-            vm.setCurrentTab(if (position == 0) SeenParameter.SEEN else SeenParameter.UNSEEN)
         }.attach()
         vp_movies_lists.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageScrollStateChanged(state: Int) {
@@ -58,6 +57,10 @@ class HomeFragment : Fragment() {
                 ) {
                     fab_add.show()
                 }
+            }
+
+            override fun onPageSelected(position: Int) {
+                vm.setCurrentTab(if (position == 0) SeenParameter.SEEN else SeenParameter.UNSEEN)
             }
         })
         vp_movies_lists.reduceDragSensitivity(6)
@@ -71,7 +74,7 @@ class HomeFragment : Fragment() {
                 }
             )
         }
-        cg_categories.check(R.id.chip_films)
+        cg_categories.check(R.id.chip_all)
         fab_add.setOnClickListener { vm.onAddNewItem() }
         vm.addItemModalState.observe(viewLifecycleOwner) { state ->
             if(state is AddItemModalState.Opened) {
@@ -82,7 +85,7 @@ class HomeFragment : Fragment() {
 
     private fun openAddItemDialog(category: Category, seen: Boolean) {
         val dialog = AddItemDialogFragment.newInstance(category, seen)
-        dialog.onNewItemAdded = { _ ->
+        dialog.onNewItemAdded = {
             vm.onNewItemAdded()
         }
         dialog.show(childFragmentManager, "ADD_ITEM")

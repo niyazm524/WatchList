@@ -1,6 +1,7 @@
 package dev.procrastineyaz.watchlist.data.repositories
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
@@ -15,10 +16,7 @@ import dev.procrastineyaz.watchlist.data.util.wrapInResultFlow
 import io.objectbox.android.ObjectBoxDataSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import java.util.concurrent.Executors
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class ItemsRepository(
     private val itemsAPIService: ItemsAPIService,
@@ -27,40 +25,15 @@ class ItemsRepository(
     private val mainExecutor = MainThreadExecutor()
     private val ioExecutor = Executors.newSingleThreadExecutor()
 
-    fun getItems(itemsQuery: ItemsQuery, scope: CoroutineScope): Flow<PagedList<Item>> = flow {
+    fun getItems(itemsQuery: ItemsQuery, scope: CoroutineScope): LiveData<PagedList<Item>> {
         val boundaryCallback = ItemsBoundaryCallback(itemsQuery, itemsDao, itemsAPIService, scope)
-        suspend fun emitFromDataSource(dataSource: DataSource<Int, Item>) {
-            emit(
-                PagedList.Builder(dataSource, 20)
-                    .setNotifyExecutor(mainExecutor)
-                    .setFetchExecutor(ioExecutor)
-                    .setBoundaryCallback(boundaryCallback)
-                    .build()
-            )
+        val factory = ObjectBoxDataSource.Factory(itemsDao.getItems(itemsQuery)).map { itemEntity ->
+            itemEntity.toItem()
         }
-        val factory =
-            ObjectBoxDataSource.Factory(itemsDao.getItems(itemsQuery)).map { itemEntity ->
-                itemEntity.toItem()
-            }
-        while (true) {
-            val dataSource = factory.create()
-            var callback: DataSource.InvalidatedCallback? = null
-            try {
-                emitFromDataSource(dataSource)
-                callback = suspendCoroutine<DataSource.InvalidatedCallback> { coroutine ->
-                    val cb = object : DataSource.InvalidatedCallback {
-                        override fun onInvalidated() {
-                            coroutine.resume(this)
-                        }
-                    }
-                    dataSource.addInvalidatedCallback(cb)
-                }
-            } finally {
-                if (callback != null) {
-                    dataSource.removeInvalidatedCallback(callback)
-                }
-            }
-        }
+        return LivePagedListBuilder(factory, 20)
+            .setInitialLoadKey(1)
+            .setBoundaryCallback(boundaryCallback)
+            .build()
     }
 
     fun searchItems(
@@ -92,8 +65,8 @@ class ItemsRepository(
         seen: Boolean = false,
         rating: Int? = null,
         note: String? = null
-    ): Flow<Result<Item, Throwable>> = wrapInResultFlow {
-        itemsAPIService.addItem(NewItemDto(itemId, seen, rating, note)).toItem()
+    ): Flow<Result<Any?, Throwable>> = wrapInResultFlow {
+        itemsAPIService.addItem(NewItemDto(itemId, seen, rating, note))
     }
 
 }

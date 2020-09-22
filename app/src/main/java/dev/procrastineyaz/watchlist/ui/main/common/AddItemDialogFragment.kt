@@ -13,7 +13,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dev.procrastineyaz.watchlist.data.dto.Category
-import dev.procrastineyaz.watchlist.data.dto.Item
 import dev.procrastineyaz.watchlist.data.dto.Result
 import dev.procrastineyaz.watchlist.databinding.FragmentAddItemBinding
 import kotlinx.android.synthetic.main.fragment_add_item.*
@@ -25,11 +24,11 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
     private val itemsAdapter = ItemsAdapter()
     private var seen: Boolean = false
     private var selectedCategory: Category = Category.UNKNOWN
-    var onNewItemAdded: ((newItem: Item) -> Unit)? = null
+    var onNewItemAdded: (() -> Unit)? = null
 
-    private val addingObserver = Observer<Result<Item, Throwable>> { result ->
+    private val addingObserver = Observer<Result<Any?, Throwable>> { result ->
         when (result) {
-            is Result.Success -> onNewItemAdded?.invoke(result.value).also { dismiss() }
+            is Result.Success -> onNewItemAdded?.invoke().also { dismiss() }
             is Result.Error -> Toast.makeText(
                 activity,
                 "Ошибка добавления: ${result.value.localizedMessage}",
@@ -66,7 +65,6 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
         }
         rv_items.adapter = itemsAdapter
         vm.liveItems.observe(viewLifecycleOwner) { items ->
-            Toast.makeText(activity, "items: ${items.loadedCount}", Toast.LENGTH_SHORT).show()
             itemsAdapter.submitList(items)
         }
         vm.isLoading.observe(viewLifecycleOwner) { loading ->

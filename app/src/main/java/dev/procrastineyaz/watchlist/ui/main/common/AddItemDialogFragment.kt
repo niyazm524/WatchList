@@ -11,10 +11,10 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import dev.procrastineyaz.watchlist.data.dto.Category
 import dev.procrastineyaz.watchlist.data.dto.Result
 import dev.procrastineyaz.watchlist.databinding.FragmentAddItemBinding
 import kotlinx.android.synthetic.main.fragment_add_item.*
@@ -23,10 +23,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddItemDialogFragment : BottomSheetDialogFragment() {
     private val vm: AddItemDialogViewModel by viewModel()
+    private val args: AddItemDialogFragmentArgs by navArgs()
     private val itemsAdapter = ItemsAdapter()
-    private var seen: Boolean = false
-    private var selectedCategory: Category = Category.UNKNOWN
-    var onNewItemAdded: (() -> Unit)? = null
 
     private val addingObserver = Observer<Result<Any?, Throwable>> { result ->
         when (result) {
@@ -50,8 +48,6 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
         val binding = FragmentAddItemBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = vm
-        seen = arguments?.getBoolean("seen") ?: false
-        selectedCategory = Category.fromId(arguments?.getInt("category") ?: -1)
         return binding.root
     }
 
@@ -60,13 +56,13 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
         sv_items.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 sv_items.clearFocus()
-                return vm.onSearch(query, selectedCategory)
+                return vm.onSearch(query, args.category)
             }
 
             override fun onQueryTextChange(newText: String?) = false
         })
         itemsAdapter.onItemClickListener = { item ->
-            vm.onItemClick(item, seen).observe(viewLifecycleOwner, addingObserver)
+            vm.onItemClick(item, args.seen).observe(viewLifecycleOwner, addingObserver)
         }
         rv_items.adapter = itemsAdapter
         vm.liveItems.observe(viewLifecycleOwner) { items ->
@@ -101,15 +97,6 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
             if (bottomSheet != null) {
                 bottomSheet.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
             }
-        }
-    }
-
-    companion object {
-        fun newInstance(category: Category, seen: Boolean) = AddItemDialogFragment().apply {
-            arguments = bundleOf(
-                "category" to category.value,
-                "seen" to seen,
-            )
         }
     }
 }

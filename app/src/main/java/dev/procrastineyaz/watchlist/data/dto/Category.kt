@@ -1,6 +1,8 @@
 package dev.procrastineyaz.watchlist.data.dto
 
-enum class Category(val value: Int) {
+import androidx.annotation.Keep
+
+@Keep enum class Category(val value: Int) {
     UNKNOWN(-1),
     FILM(0),
     SERIES(1),

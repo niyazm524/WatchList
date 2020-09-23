@@ -28,7 +28,7 @@ class ItemsAdapter : PagedListAdapter<Item, MovieViewHolder>(MoviesDiffCallback(
     }
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        getItem(position)?.let { holder.bindTo(it, onItemClickListener) }
+        getItem(position)?.also { holder.bindTo(it, onItemClickListener) } ?: holder.clear()
     }
 
     override fun getItemId(position: Int) = getItem(position)?.id ?: -1
@@ -45,7 +45,7 @@ class MovieViewHolder(override val containerView: View) :
         }
         tv_title.text = item.nameRu
         tv_title_global.text = item.nameEn
-        if(item.rating.isNullOrEmpty()) {
+        if (item.rating.isNullOrEmpty()) {
             tv_rating.visibility = View.INVISIBLE
         } else {
             tv_rating.visibility = View.VISIBLE
@@ -63,6 +63,15 @@ class MovieViewHolder(override val containerView: View) :
             memoryCacheKey(item.id.toString())
             crossfade(true)
         }
+    }
+
+    fun clear() {
+        iv_poster.setImageResource(R.drawable.no_movie_poster)
+        tv_note.text = ""
+        tv_rating.visibility = View.INVISIBLE
+        cv_item_root.setOnClickListener(null)
+        tv_title_global.text = ""
+        tv_title.text = "Фильм загружается..."
     }
 }
 

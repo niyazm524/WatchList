@@ -28,6 +28,7 @@ data class ItemsQueryDto(
 data class ItemsSearchResponseDto(
     val keywords: String,
     val pagesCount: Int,
+    val count: Int,
     val items: List<RemoteItem>
 )
 

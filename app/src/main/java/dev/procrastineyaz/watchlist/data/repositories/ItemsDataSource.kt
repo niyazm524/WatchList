@@ -37,7 +37,7 @@ class ItemsDataSource(
                 callback.onResult(
                     mapListToItems(result.value.items),
                     0,
-                    result.value.pagesCount * 20,
+                    result.value.count,
                     null,
                     if (result.value.pagesCount > 1) 2 else -1
                 )

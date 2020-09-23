@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.min
 
 class ItemsBoundaryCallback(
     private val query: ItemsQuery,
@@ -49,7 +50,7 @@ class ItemsBoundaryCallback(
             itemsDao.insertItems(response.items.map { it.toEntityItem() })
         } catch (error: Throwable) {
             delay(wait)
-            invalidateItems(page, (wait * 1.5f).toLong())
+            invalidateItems(page, min(wait * 2, 30000))
         } finally {
             isRunning = false
         }

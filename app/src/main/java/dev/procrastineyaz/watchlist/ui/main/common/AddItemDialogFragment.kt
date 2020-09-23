@@ -61,7 +61,7 @@ class AddItemDialogFragment : BottomSheetDialogFragment() {
 
             override fun onQueryTextChange(newText: String?) = false
         })
-        itemsAdapter.onItemClickListener = { item ->
+        itemsAdapter.onItemClickListener = { item, _ ->
             vm.onItemClick(item, args.seen).observe(viewLifecycleOwner, addingObserver)
         }
         rv_items.adapter = itemsAdapter

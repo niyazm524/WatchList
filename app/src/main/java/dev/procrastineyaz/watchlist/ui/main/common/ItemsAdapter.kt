@@ -12,7 +12,7 @@ import dev.procrastineyaz.watchlist.data.dto.Item
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_movie.*
 
-typealias ItemClickListener = (item: Item) -> Unit
+typealias ItemClickListener = (item: Item, container: View) -> Unit
 
 class ItemsAdapter : PagedListAdapter<Item, MovieViewHolder>(MoviesDiffCallback()) {
 
@@ -41,7 +41,7 @@ class MovieViewHolder(override val containerView: View) :
 
     fun bindTo(item: Item, onItemClickListener: ItemClickListener? = null) {
         if (onItemClickListener != null) {
-            cv_item_root.setOnClickListener { onItemClickListener(item) }
+            cv_item_root.setOnClickListener { onItemClickListener(item, containerView) }
         }
         tv_title.text = item.nameRu
         tv_title_global.text = item.nameEn

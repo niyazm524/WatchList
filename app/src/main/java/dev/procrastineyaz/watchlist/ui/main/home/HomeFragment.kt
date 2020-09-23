@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.Navigator
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.Category
+import dev.procrastineyaz.watchlist.data.dto.Item
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.databinding.FragmentHomeBinding
 import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
@@ -32,7 +34,6 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        inflater.inflate(R.layout.fragment_home, container, false)
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.viewModel = vm
         binding.lifecycleOwner = this
@@ -82,6 +83,12 @@ class HomeFragment : Fragment() {
                 openAddItemDialog(state.category, state.seen)
             }
         }
+        vm.itemForDetails.observe(viewLifecycleOwner) { item ->
+            item?.let { (item, extras) ->
+                openItemDetails(item, extras)
+                vm.navigationToItemCompleted()
+            }
+        }
         setFragmentResultListener("adding") { _, result ->
             if(result.getBoolean("succeed", false)) {
                 vm.onNewItemAdded()
@@ -92,6 +99,11 @@ class HomeFragment : Fragment() {
     private fun openAddItemDialog(category: Category, seen: Boolean) {
         val action = HomeFragmentDirections.actionNavigationHomeToNavigationAddItem(category, seen)
         findNavController().navigate(action)
+    }
+
+    private fun openItemDetails(item: Item, extras: Navigator.Extras) {
+        val action = HomeFragmentDirections.actionNavigationHomeToItemDetails(item)
+        findNavController().navigate(action, extras)
     }
 
 }

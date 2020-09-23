@@ -5,6 +5,7 @@ import dev.procrastineyaz.watchlist.ui.main.common.AddItemDialogViewModel
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapter
 import dev.procrastineyaz.watchlist.ui.main.feed.FeedViewModel
 import dev.procrastineyaz.watchlist.ui.main.home.HomeViewModel
+import dev.procrastineyaz.watchlist.ui.main.item_view.ItemDetailsViewModel
 import dev.procrastineyaz.watchlist.ui.main.more.MoreViewModel
 import dev.procrastineyaz.watchlist.ui.register.RegisterViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,5 +18,6 @@ val uiModule = module {
     viewModel { LoginViewModel(get(), get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { AddItemDialogViewModel(get()) }
+    viewModel { ItemDetailsViewModel() }
     factory { ItemsAdapter() }
 }

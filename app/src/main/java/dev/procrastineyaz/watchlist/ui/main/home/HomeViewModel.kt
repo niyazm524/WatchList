@@ -1,6 +1,7 @@
 package dev.procrastineyaz.watchlist.ui.main.home
 
 import androidx.lifecycle.*
+import androidx.navigation.Navigator
 import androidx.paging.PagedList
 import dev.procrastineyaz.watchlist.data.dto.Category
 import dev.procrastineyaz.watchlist.data.dto.Item
@@ -22,6 +23,8 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
     private val _unseenItems = MutableLiveData<PagedList<Item>>()
     private val _addItemModalState = MutableLiveData<AddItemModalState>(AddItemModalState.Closed)
     val addItemModalState: LiveData<AddItemModalState> = _addItemModalState
+    private val _itemForDetails = MutableLiveData<Pair<Item, Navigator.Extras>?>(null)
+    val itemForDetails: LiveData<Pair<Item, Navigator.Extras>?> = _itemForDetails
     private val searchPhrase: String? = null
     private var category: Category = Category.UNKNOWN
     private var fetchingJob: Job? = null
@@ -75,6 +78,14 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
 
     fun onNewItemAdded() {
         invalidateItems()
+    }
+
+    override fun onItemClick(item: Item, extras: Navigator.Extras) {
+        _itemForDetails.value = item to extras
+    }
+
+    fun navigationToItemCompleted() {
+        _itemForDetails.value = null
     }
 
 

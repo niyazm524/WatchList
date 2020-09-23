@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapter
@@ -40,6 +42,14 @@ class ItemsListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         rv_movies.adapter = itemsAdapter
+        itemsAdapter.onItemClickListener = { item, container ->
+            val extras = FragmentNavigatorExtras(
+//                container.findViewById<TextView>(R.id.tv_title) to "tv_title_transition",
+//                container.findViewById<TextView>(R.id.tv_title_global) to "tv_title_global_transition",
+                container.findViewById<ImageView>(R.id.iv_poster) to "iv_poster_transition",
+            )
+            provider.onItemClick(item, extras)
+        }
         provider.getItemsLiveData(seen).observe(viewLifecycleOwner, { items ->
             itemsAdapter.submitList(items)
             setEmptyListMessageShowing(items.isEmpty())

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.main.item_view.ItemDetailsFragment">
+
+    <data>
+        <variable
+            name="vm"
+            type="dev.procrastineyaz.watchlist.ui.main.item_view.ItemDetailsViewModel" />
+        <variable
+            name="item"
+            type="dev.procrastineyaz.watchlist.data.dto.Item" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+
+        <ImageView
+            android:id="@+id/iv_poster"
+            android:layout_width="169dp"
+            android:layout_height="254dp"
+            android:scaleType="fitXY"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            tools:src="@drawable/film_0"
+            android:transitionName="iv_poster_transition"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@{item.nameRu}"
+            tools:text="название фильма"
+            android:layout_marginEnd="8dp"
+            android:maxLines="3"
+            android:textColor="#000000"
+            android:transitionName="tv_title_transition"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_poster"
+            app:layout_constraintTop_toTopOf="@+id/iv_poster" />
+
+        <TextView
+            android:id="@+id/tv_title_global"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="#575757"
+            android:text="@{item.nameEn}"
+            android:transitionName="tv_title_global_transition"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintTop_toBottomOf="@id/tv_title"
+            tools:text="Global title" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+            app:layout_constraintEnd_toEndOf="@+id/tv_title"
+            app:layout_constraintStart_toStartOf="@+id/tv_title_global"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_global">
+            <TextView
+                android:id="@+id/tv_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:text="@{item.description}"
+                android:layout_marginBottom="16dp"
+                tools:text="ДиКаприо сходит с ума на острове" />
+
+        </ScrollView>
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            style="@style/SmallRatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:numStars="10"
+            android:isIndicator="false"
+            android:rating="4"
+            android:progressTint="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

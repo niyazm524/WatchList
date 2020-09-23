@@ -37,4 +37,8 @@
         <item name="cornerSizeBottomLeft">0dp</item>
     </style>
 
+    <style name="SmallRatingBar"
+        parent="Widget.AppCompat.RatingBar.Indicator">
+    </style>
+
 </resources>

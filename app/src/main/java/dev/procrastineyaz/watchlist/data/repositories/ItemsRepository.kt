@@ -11,6 +11,7 @@ import dev.procrastineyaz.watchlist.data.local.dao.ItemsDao
 import dev.procrastineyaz.watchlist.data.mappers.toItem
 import dev.procrastineyaz.watchlist.data.remote.ItemsAPIService
 import dev.procrastineyaz.watchlist.data.remote.dto.NewItemDto
+import dev.procrastineyaz.watchlist.data.remote.dto.UserItemPropsDto
 import dev.procrastineyaz.watchlist.data.util.MainThreadExecutor
 import dev.procrastineyaz.watchlist.data.util.wrapInResultFlow
 import io.objectbox.android.ObjectBoxDataSource
@@ -67,6 +68,32 @@ class ItemsRepository(
         note: String? = null
     ): Flow<Result<Any?, Throwable>> = wrapInResultFlow {
         itemsAPIService.addItem(NewItemDto(itemId, seen, rating, note))
+    }
+
+    fun updateItem(
+        itemId: Int,
+        seen: Boolean? = null,
+        rating: Float? = null,
+        note: String? = null
+    ): Flow<Result<Boolean, Throwable>> = wrapInResultFlow {
+        try {
+            val result = itemsAPIService.updateItem(itemId, UserItemPropsDto(rating, note, seen))
+            if(result) {
+                itemsDao.updateItem(itemId, rating, seen, note)
+            }
+            return@wrapInResultFlow result
+        } catch (err: Throwable) {
+            throw err
+        }
+    }
+
+    fun deleteItem(itemId: Int): Flow<Result<Unit, Throwable>> = wrapInResultFlow {
+        try {
+            itemsAPIService.deleteItem(itemId)
+            itemsDao.deleteItem(itemId)
+        } catch (err: Throwable) {
+            throw err
+        }
     }
 
 }

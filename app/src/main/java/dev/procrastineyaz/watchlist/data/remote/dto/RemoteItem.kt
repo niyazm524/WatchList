@@ -44,3 +44,9 @@ data class ItemsListResponse(
     val count: Int,
     val itemsPerPage: Int,
 )
+
+data class UserItemPropsDto(
+    val rating: Float? = null,
+    val note: String? = null,
+    val seen: Boolean? = null,
+)

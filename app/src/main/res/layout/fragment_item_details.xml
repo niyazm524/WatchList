@@ -5,92 +5,204 @@
     tools:context=".ui.main.item_view.ItemDetailsFragment">
 
     <data>
+
         <variable
             name="vm"
             type="dev.procrastineyaz.watchlist.ui.main.item_view.ItemDetailsViewModel" />
+
         <variable
             name="item"
             type="dev.procrastineyaz.watchlist.data.dto.Item" />
+
+        <variable
+            name="relativeTime"
+            type="String" />
+
+        <variable
+            name="isFakeDeleted"
+            type="Boolean" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-        <ImageView
-            android:id="@+id/iv_poster"
-            android:layout_width="169dp"
-            android:layout_height="254dp"
-            android:scaleType="fitXY"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            tools:src="@drawable/film_0"
-            android:transitionName="iv_poster_transition"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/iv_poster"
+                android:layout_width="169dp"
+                android:layout_height="254dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:scaleType="fitXY"
+                android:transitionName="iv_poster_transition"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/film_0" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="@{item.nameRu}"
-            tools:text="название фильма"
-            android:layout_marginEnd="8dp"
-            android:maxLines="3"
-            android:textColor="#000000"
-            android:transitionName="tv_title_transition"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/iv_poster"
-            app:layout_constraintTop_toTopOf="@+id/iv_poster" />
-
-        <TextView
-            android:id="@+id/tv_title_global"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textColor="#575757"
-            android:text="@{item.nameEn}"
-            android:transitionName="tv_title_global_transition"
-            app:layout_constraintEnd_toEndOf="@+id/tv_title"
-            app:layout_constraintStart_toStartOf="@id/tv_title"
-            app:layout_constraintTop_toBottomOf="@id/tv_title"
-            tools:text="Global title" />
-
-        <ScrollView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
-            app:layout_constraintEnd_toEndOf="@+id/tv_title"
-            app:layout_constraintStart_toStartOf="@+id/tv_title_global"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_global">
             <TextView
-                android:id="@+id/tv_note"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:maxLines="3"
+                android:text="@{item.nameRu}"
                 android:textColor="#000000"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                android:transitionName="tv_title_transition"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iv_poster"
+                app:layout_constraintTop_toTopOf="@+id/iv_poster"
+                tools:text="название фильма" />
+
+            <TextView
+                android:id="@+id/tv_title_global"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{item.nameEn}"
+                android:textColor="#575757"
+                android:transitionName="tv_title_global_transition"
+                app:layout_constraintEnd_toEndOf="@+id/tv_title"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                tools:text="Global title" />
+
+            <ScrollView
+                android:id="@+id/scrollView2"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/iv_poster"
+                app:layout_constraintEnd_toEndOf="@+id/tv_title"
+                app:layout_constraintStart_toStartOf="@+id/tv_title_global"
+                app:layout_constraintTop_toBottomOf="@+id/tv_title_global">
+
+                <TextView
+                    android:id="@+id/tv_note"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{item.description}"
+                    android:textColor="#000000"
+                    android:textSize="14sp"
+                    tools:text="ДиКаприо сходит с ума на острове" />
+
+            </ScrollView>
+
+            <CheckBox
+                android:id="@+id/cb_seen"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:button="@drawable/sl_seen"
+                android:buttonTint="@color/colorPrimary"
+                android:checked="@={vm.seen}"
+                android:gravity="center_vertical|start"
+                android:hapticFeedbackEnabled="true"
+                android:paddingStart="4dp"
+                android:enabled="@{!isFakeDeleted}"
+                android:paddingEnd="0dp"
+                android:text='@{vm.seen ? "Просмотрено" : "Не просмотрено"}'
+                android:textColor="@android:color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_poster"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.45"
+                tools:text="Не просмотрено" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:drawableStart="@drawable/ic_baseline_date_range_24"
+                android:drawablePadding="4dp"
+                android:drawableTint="@color/colorPrimary"
+                android:gravity="center_vertical|clip_horizontal"
+                android:text='@{relativeTime}'
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
                 android:textSize="14sp"
-                android:text="@{item.description}"
-                android:layout_marginBottom="16dp"
-                tools:text="ДиКаприо сходит с ума на острове" />
+                app:layout_constraintBottom_toBottomOf="@+id/cb_seen"
+                app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+                app:layout_constraintTop_toTopOf="@+id/cb_seen"
+                app:layout_constraintWidth_default="percent"
+                app:layout_constraintWidth_percent="0.45"
+                tools:text="Добавлено вчера" />
 
-        </ScrollView>
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="@style/SmallRatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:isIndicator="@{isFakeDeleted}"
+                android:numStars="10"
+                android:progressTint="@color/colorPrimary"
+                android:rating="@={vm.userRating}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cb_seen"
+                tools:layout_editor_absoluteY="270dp" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="@style/SmallRatingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:numStars="10"
-            android:isIndicator="false"
-            android:rating="4"
-            android:progressTint="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iv_poster" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_note"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ratingBar">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/string_note"
+                    android:imeOptions="actionDone"
+                    android:maxLines="4"
+                    android:enabled="@{!isFakeDeleted}"
+                    android:text="@={vm.note}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_share"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:text="Поделиться"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                app:icon="@drawable/ic_baseline_share_24"
+                app:iconPadding="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_remove"
+                app:layout_constraintStart_toStartOf="@id/til_note"
+                app:layout_constraintTop_toBottomOf="@+id/til_note" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_remove"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="64dp"
+                android:text="Удалить"
+                android:textColor="#C91111"
+                app:icon="@drawable/ic_baseline_delete_24"
+                app:iconPadding="4dp"
+                app:iconTint="#C91111"
+                android:enabled="@{!isFakeDeleted}"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_share"
+                app:layout_constraintEnd_toEndOf="@id/til_note"
+                app:layout_constraintStart_toEndOf="@id/btn_share"
+                app:layout_constraintTop_toTopOf="@+id/btn_share" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </layout>

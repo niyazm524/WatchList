@@ -68,12 +68,11 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
     }
 
     fun onAddNewItem() {
-        _addItemModalState.postValue(
-            AddItemModalState.Opened(
-                category,
-                currentTab == SeenParameter.SEEN
-            )
+        _addItemModalState.value = AddItemModalState.Opened(
+            category,
+            currentTab == SeenParameter.SEEN
         )
+        _addItemModalState.value = AddItemModalState.Closed
     }
 
     fun onNewItemAdded() {

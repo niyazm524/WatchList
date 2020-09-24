@@ -30,4 +30,19 @@ class ItemsDao(private val itemsBox: Box<ItemEntity>) {
         itemsBox.put(items)
     }
 
+    fun updateItem(itemId: Int, rating: Float?, seen: Boolean?, note: String?) {
+        val item = itemsBox.get(itemId.toLong())
+        requireNotNull(item)
+        val updatedItem = item.copy(
+            seen = seen ?: item.seen,
+            userRating = if(seen == true || (seen == null && item.seen)) rating else null,
+            note = note ?: item.note,
+        )
+        itemsBox.put(updatedItem)
+    }
+
+    fun deleteItem(itemId: Int) {
+        itemsBox.remove(itemId.toLong())
+    }
+
 }

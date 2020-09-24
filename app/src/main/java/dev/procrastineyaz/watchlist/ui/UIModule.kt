@@ -18,6 +18,6 @@ val uiModule = module {
     viewModel { LoginViewModel(get(), get()) }
     viewModel { RegisterViewModel(get()) }
     viewModel { AddItemDialogViewModel(get()) }
-    viewModel { ItemDetailsViewModel() }
+    viewModel { ItemDetailsViewModel(get()) }
     factory { ItemsAdapter() }
 }

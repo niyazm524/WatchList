@@ -103,7 +103,7 @@ class HomeFragment : Fragment() {
 
     private fun openItemDetails(item: Item, extras: Navigator.Extras) {
         val action = HomeFragmentDirections.actionNavigationHomeToItemDetails(item)
-        findNavController().navigate(action, extras)
+        findNavController().navigate(action)
     }
 
 }

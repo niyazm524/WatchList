@@ -15,7 +15,7 @@
             app:destination="@id/navigation_add_item" />
         <action
             android:id="@+id/action_navigation_home_to_item_details"
-            app:destination="@id/navigation_item_details"/>
+            app:destination="@id/navigation_item_details" />
     </fragment>
 
     <fragment

@@ -28,6 +28,7 @@
             android:layout_height="165dp"
             android:adjustViewBounds="true"
             android:scaleType="fitXY"
+            android:transitionName="iv_poster_transition"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -62,6 +63,7 @@
             android:layout_marginEnd="8dp"
             android:maxLines="2"
             android:textColor="#000000"
+            android:transitionName="tv_title_transition"
             android:textSize="18dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -72,6 +74,7 @@
         <TextView
             android:id="@+id/tv_title_global"
             android:layout_width="0dp"
+            android:transitionName="tv_title_global_transition"
             android:layout_height="wrap_content"
             android:textColor="#575757"
             app:layout_constraintEnd_toEndOf="@+id/tv_title"

@@ -20,6 +20,7 @@ import dev.procrastineyaz.watchlist.ui.helpers.reduceDragSensitivity
 import dev.procrastineyaz.watchlist.ui.main.common.CategoryItemPagesAdapter
 import dev.procrastineyaz.watchlist.ui.main.movies.ItemsListFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.layout_chips.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 

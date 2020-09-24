@@ -38,8 +38,7 @@
 
         </com.google.android.material.tabs.TabLayout>
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/cg_categories"
+        <include
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -47,38 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tabLayout"
-            app:singleLine="true"
-            app:selectionRequired="true"
-            app:singleSelection="true">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_all"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:text="@string/category_all" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_films"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:text="@string/category_films" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_series"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:text="@string/category_series" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_anime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checkable="true"
-                android:text="@string/category_anime" />
-        </com.google.android.material.chip.ChipGroup>
+            layout="@layout/layout_chips" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_movies_lists"

@@ -59,6 +59,10 @@
         <argument
             android:name="item"
             app:argType="dev.procrastineyaz.watchlist.data.dto.Item" />
+        <argument
+            android:name="readonly"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/navigation_users"
@@ -80,5 +84,12 @@
         <argument
             android:name="user"
             app:argType="dev.procrastineyaz.watchlist.data.dto.SubscribeUser" />
+        <action
+            android:id="@+id/action_navigation_user_view_to_item_details"
+            app:destination="@id/navigation_item_details" >
+            <argument
+                android:name="readonly"
+                android:defaultValue="true" />
+        </action>
     </fragment>
 </navigation>

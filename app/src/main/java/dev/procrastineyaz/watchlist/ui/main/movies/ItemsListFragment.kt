@@ -14,10 +14,10 @@ import dev.procrastineyaz.watchlist.ui.dto.ItemsProviders
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapter
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapterProvider
 import dev.procrastineyaz.watchlist.ui.main.home.HomeViewModel
+import dev.procrastineyaz.watchlist.ui.main.user_view.UserViewViewModel
 import kotlinx.android.synthetic.main.items_list_fragment.*
 import org.koin.android.ext.android.get
 import org.koin.androidx.viewmodel.ext.android.getSharedViewModel
-import org.koin.core.qualifier.named
 
 class ItemsListFragment : Fragment() {
 
@@ -33,8 +33,13 @@ class ItemsListFragment : Fragment() {
         val seenArgument = arguments?.getBoolean("seen") ?: true
         seen = if (seenArgument) SeenParameter.SEEN else SeenParameter.UNSEEN
         providerName =
-            ItemsProviders.valueOf(arguments?.getString("provider") ?: ItemsProviders.HomeItemsVM.name)
-        provider = getSharedViewModel<HomeViewModel>(named(providerName))
+            ItemsProviders.valueOf(
+                arguments?.getString("provider") ?: ItemsProviders.HomeItemsVM.name
+            )
+        provider = when (providerName) {
+            ItemsProviders.HomeItemsVM -> getSharedViewModel<HomeViewModel>()
+            ItemsProviders.UserItemsVM -> getSharedViewModel<UserViewViewModel>()
+        }
         return inflater.inflate(R.layout.items_list_fragment, container, false)
     }
 
@@ -55,7 +60,7 @@ class ItemsListFragment : Fragment() {
     }
 
     private fun setEmptyListMessageShowing(showing: Boolean = true) {
-        tv_empty_list.visibility = if(showing) View.VISIBLE else View.GONE
+        tv_empty_list.visibility = if (showing) View.VISIBLE else View.GONE
     }
 
     companion object {

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="dev.procrastineyaz.watchlist.ui.main.home.HomeViewModel" />
+            type="dev.procrastineyaz.watchlist.ui.main.common.BaseItemsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -3,19 +3,23 @@ package dev.procrastineyaz.watchlist.ui.main.home
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
+import androidx.navigation.Navigator
 import androidx.navigation.fragment.findNavController
 import dev.procrastineyaz.watchlist.data.dto.Category
+import dev.procrastineyaz.watchlist.data.dto.Item
 import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
 import dev.procrastineyaz.watchlist.ui.dto.ItemsProviders
 import dev.procrastineyaz.watchlist.ui.main.common.BaseItemsFragment
+import dev.procrastineyaz.watchlist.ui.main.common.BaseItemsViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.core.qualifier.named
 
 @ExperimentalCoroutinesApi
 class HomeFragment : BaseItemsFragment() {
-    override val vm: HomeViewModel by sharedViewModel(named(ItemsProviders.HomeItemsVM))
+    val vm: HomeViewModel by sharedViewModel()
+    override val baseVM: BaseItemsViewModel
+    get() = vm
     override val provider = ItemsProviders.HomeItemsVM
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -32,6 +36,16 @@ class HomeFragment : BaseItemsFragment() {
                 vm.onNewItemAdded()
             }
         }
+        vm.itemForDetails.observe(viewLifecycleOwner) { item ->
+            item?.let { (item, extras) ->
+                openItemDetails(item, extras)
+            }
+        }
+    }
+
+    private fun openItemDetails(item: Item, extras: Navigator.Extras) {
+        val action = HomeFragmentDirections.actionNavigationHomeToItemDetails(item)
+        findNavController().navigate(action)
     }
 
     private fun openAddItemDialog(category: Category, seen: Boolean) {

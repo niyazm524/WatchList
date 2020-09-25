@@ -15,12 +15,14 @@
             type="dev.procrastineyaz.watchlist.data.dto.Item" />
 
         <variable
-            name="relativeTime"
-            type="String" />
+            name="readonly"
+            type="Boolean" />
 
         <variable
-            name="isFakeDeleted"
-            type="Boolean" />
+            name="relativeTime"
+            type="String" />
+        <import type="android.view.View" />
+
     </data>
 
     <ScrollView
@@ -109,7 +111,7 @@
                 android:gravity="center_vertical|start"
                 android:hapticFeedbackEnabled="true"
                 android:paddingStart="4dp"
-                android:enabled="@{!isFakeDeleted}"
+                android:enabled="@{!readonly}"
                 android:paddingEnd="0dp"
                 android:text='@{vm.seen ? "Просмотрено" : "Не просмотрено"}'
                 android:textColor="@android:color/black"
@@ -142,7 +144,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:isIndicator="@{isFakeDeleted}"
+                android:isIndicator="@{readonly}"
                 android:numStars="10"
                 android:progressTint="@color/colorPrimary"
                 android:rating="@={vm.userRating}"
@@ -169,7 +171,7 @@
                     android:hint="@string/string_note"
                     android:imeOptions="actionDone"
                     android:maxLines="4"
-                    android:enabled="@{!isFakeDeleted}"
+                    android:enabled="@{!readonly}"
                     android:text="@={vm.note}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -198,7 +200,8 @@
                 app:icon="@drawable/ic_baseline_delete_24"
                 app:iconPadding="4dp"
                 app:iconTint="#C91111"
-                android:enabled="@{!isFakeDeleted}"
+                android:visibility="@{readonly ? View.INVISIBLE : View.VISIBLE}"
+                android:enabled="@{!readonly}"
                 app:layout_constraintBottom_toBottomOf="@+id/btn_share"
                 app:layout_constraintEnd_toEndOf="@id/til_note"
                 app:layout_constraintStart_toEndOf="@id/btn_share"

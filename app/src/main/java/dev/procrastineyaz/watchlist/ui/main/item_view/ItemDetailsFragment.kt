@@ -27,14 +27,15 @@ class ItemDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if(this::binding.isInitialized) return binding.root
+        if (this::binding.isInitialized) return binding.root
         binding = FragmentItemDetailsBinding.inflate(inflater, container, false)
         vm.setItem(args.item)
-        val relativeTime = args.item.createdAt?.time?.let { DateUtils.getRelativeTimeSpanString(it) }
-        binding.relativeTime = (if(relativeTime != null) "Добавлено $relativeTime" else "")
+        val relativeTime =
+            args.item.createdAt?.time?.let { DateUtils.getRelativeTimeSpanString(it) }
+        binding.relativeTime = (if (relativeTime != null) "Добавлено $relativeTime" else "")
         binding.vm = vm
         binding.item = args.item
-        binding.isFakeDeleted = false
+        binding.readonly = args.readonly
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -46,46 +47,51 @@ class ItemDetailsFragment : Fragment() {
         }
 
         vm.updateResult.observe(viewLifecycleOwner) { result ->
-            if(result is Result.Success) {
+            if (result is Result.Success) {
                 Toast.makeText(context, "Изменения сохранены", Toast.LENGTH_SHORT).show()
-            } else if(result is Result.Error) {
+            } else if (result is Result.Error) {
                 Toast.makeText(context, "Произошла ошибка при сохранении", Toast.LENGTH_SHORT)
                     .show()
             }
         }
-        vm.deleteResult.observe(viewLifecycleOwner) { result ->
-            if(result is Result.Error) {
-                binding.isFakeDeleted = false
-                Toast.makeText(context, "При удалении произошла ошибка", Toast.LENGTH_SHORT).show()
+        if (!args.readonly)
+            vm.deleteResult.observe(viewLifecycleOwner) { result ->
+                if (result is Result.Error) {
+                    binding.readonly = false
+                    Toast.makeText(context, "При удалении произошла ошибка", Toast.LENGTH_SHORT)
+                        .show()
+                }
             }
-        }
 
-        btn_remove.setOnClickListener {
+        if (!args.readonly) btn_remove.setOnClickListener {
             showRemoveSnackbar()
         }
     }
 
     private fun showRemoveSnackbar() {
-        deleteSnackbar = Snackbar.make(requireView(), "Элемент \"${args.item.nameRu}\" удален", 3200)
-            .addCallback(object : Snackbar.Callback() {
-                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                    if(event == DISMISS_EVENT_TIMEOUT) {
-                        vm.deleteItem()
+        deleteSnackbar =
+            Snackbar.make(requireView(), "Элемент \"${args.item.nameRu}\" удален", 3200)
+                .addCallback(object : Snackbar.Callback() {
+                    override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                        if (event == DISMISS_EVENT_TIMEOUT) {
+                            vm.deleteItem()
+                        }
+                        deleteSnackbar = null
                     }
-                    deleteSnackbar = null
+
+                    override fun onShown(sb: Snackbar?) {
+                        binding.readonly = true
+                    }
+                })
+                .setAction("Отмена") {
+                    binding.readonly = false
                 }
-                override fun onShown(sb: Snackbar?) {
-                    binding.isFakeDeleted = true
-                }
-            })
-            .setAction("Отмена") {
-                binding.isFakeDeleted = false
-            }
         deleteSnackbar?.apply {
             val bottomMargin = TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    48f,
-                    resources.displayMetrics)
+                TypedValue.COMPLEX_UNIT_DIP,
+                48f,
+                resources.displayMetrics
+            )
 //            view.layoutParams = (view.layoutParams as ViewGroup.MarginLayoutParams).let {
 //
 //                it.setMargins(4, 0, 4, bottomMargin)

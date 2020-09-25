@@ -5,25 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigator
-import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.Category
-import dev.procrastineyaz.watchlist.data.dto.Item
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.databinding.FragmentHomeBinding
 import dev.procrastineyaz.watchlist.ui.dto.ItemsProviders
 import dev.procrastineyaz.watchlist.ui.helpers.reduceDragSensitivity
-import dev.procrastineyaz.watchlist.ui.main.home.HomeFragmentDirections
-import dev.procrastineyaz.watchlist.ui.main.home.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.layout_chips.*
 import kotlinx.android.synthetic.main.layout_items_view.*
 
 abstract class BaseItemsFragment : Fragment() {
-    abstract val vm: HomeViewModel
+    abstract val baseVM: BaseItemsViewModel
     abstract val provider: ItemsProviders
     private lateinit var categoryItemPagesAdapter: CategoryItemPagesAdapter
 
@@ -33,7 +28,7 @@ abstract class BaseItemsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentHomeBinding.inflate(inflater, container, false)
-        binding.viewModel = vm
+        binding.viewModel = baseVM
         binding.lifecycleOwner = this
         return binding.root
     }
@@ -60,12 +55,12 @@ abstract class BaseItemsFragment : Fragment() {
             }
 
             override fun onPageSelected(position: Int) {
-                vm.setCurrentTab(if (position == 0) SeenParameter.SEEN else SeenParameter.UNSEEN)
+                baseVM.selectCurrentTab(if (position == 0) SeenParameter.SEEN else SeenParameter.UNSEEN)
             }
         })
         vp_movies_lists.reduceDragSensitivity(6)
         cg_categories.setOnCheckedChangeListener { _, checkedId ->
-            vm.selectCategory(
+            baseVM.selectCategory(
                 when (checkedId) {
                     R.id.chip_films -> Category.FILM
                     R.id.chip_series -> Category.SERIES
@@ -75,16 +70,7 @@ abstract class BaseItemsFragment : Fragment() {
             )
         }
         cg_categories.check(R.id.chip_all)
-        vm.itemForDetails.observe(viewLifecycleOwner) { item ->
-            item?.let { (item, extras) ->
-                openItemDetails(item, extras)
-                vm.navigationToItemCompleted()
-            }
-        }
     }
 
-    private fun openItemDetails(item: Item, extras: Navigator.Extras) {
-        val action = HomeFragmentDirections.actionNavigationHomeToItemDetails(item)
-        findNavController().navigate(action)
-    }
+
 }

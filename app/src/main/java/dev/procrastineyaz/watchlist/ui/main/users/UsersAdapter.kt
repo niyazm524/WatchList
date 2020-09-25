@@ -6,11 +6,9 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import coil.transform.CircleCropTransformation
-import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.SubscribeUser
 import dev.procrastineyaz.watchlist.databinding.ItemUserBinding
+import dev.procrastineyaz.watchlist.ui.helpers.loadUserAvatar
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_user.*
 
@@ -40,15 +38,7 @@ class UserViewHolder(override val containerView: View, val binding: ItemUserBind
         binding.user = user
         binding.listener = listener
         binding.actionListener = actionListener
-        if(user.avatarUrl != null) {
-            iv_avatar.load(user.avatarUrl) {
-                transformations(CircleCropTransformation())
-            }
-        } else {
-            iv_avatar.load(R.drawable.sharingan) {
-                transformations(CircleCropTransformation())
-            }
-        }
+        iv_avatar.loadUserAvatar(user.avatarUrl)
     }
 
     fun clear() {

@@ -6,8 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import coil.load
+import coil.transform.CircleCropTransformation
+import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.databinding.FragmentMoreBinding
 import dev.procrastineyaz.watchlist.ui.login.LoginActivity
+import kotlinx.android.synthetic.main.fragment_more.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,6 +44,9 @@ class MoreFragment : Fragment() {
             startActivity(Intent(activity, LoginActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             })
+        }
+        iv_avatar.load(R.drawable.sharingan) {
+            transformations(CircleCropTransformation())
         }
     }
 

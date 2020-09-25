@@ -9,9 +9,16 @@
         <variable
             name="listener"
             type="dev.procrastineyaz.watchlist.ui.main.users.UserClickListener" />
+        <variable
+            name="actionListener"
+            type="dev.procrastineyaz.watchlist.ui.main.users.UserClickListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="?android:selectableItemBackground"
+        android:clickable="@{listener != null}"
+        android:focusable="true"
+        android:onClick="@{() -> listener.onClick(user)}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="8dp"
@@ -31,15 +38,30 @@
 
         <TextView
             android:id="@+id/tv_username"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:text="@{user.username}"
-            tools:text="kelte4"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+            app:layout_constraintEnd_toStartOf="@+id/btn_user_action"
             app:layout_constraintStart_toEndOf="@+id/iv_avatar"
-            app:layout_constraintTop_toTopOf="@+id/iv_avatar" />
+            app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+            tools:text="kelte4" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_user_action"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#6446B1"
+            android:onClick="@{() -> actionListener.onClick(user)}"
+            android:text='@{user.getActionText()}'
+            app:layout_constraintBottom_toBottomOf="@+id/iv_avatar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_avatar"
+            tools:text="Подписаться" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 

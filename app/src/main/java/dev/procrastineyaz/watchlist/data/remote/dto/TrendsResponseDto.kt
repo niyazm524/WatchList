@@ -9,8 +9,7 @@ data class TrendsResponseDto(
     val maxRank: Int,
     val trendItems: List<TrendItemDto>
 ) : IPageableResponse<Item> {
-    override val items: List<Item>
-    get() = trendItems.map { it.film.toItem() }
+    override fun getMappedItems() = trendItems.map { it.film.toItem() }
 }
 
 data class TrendItemDto(val rank: Int, val film: RemoteItem)

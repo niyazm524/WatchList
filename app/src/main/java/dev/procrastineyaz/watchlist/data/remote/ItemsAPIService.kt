@@ -17,6 +17,16 @@ interface ItemsAPIService {
         @Query("itemsPerPage") itemsPerPage: Int? = null,
     ): ItemsListResponse
 
+    @GET("subscriptions/{userId}/items")
+    suspend fun getSubscriptionItems(
+        @Path("userId") userId: Long,
+        @Query("category") category: String? = null,
+        @Query("filter") filter: String? = null,
+        @Query("search") search: String? = null,
+        @Query("page") page: Int? = null,
+        @Query("itemsPerPage") itemsPerPage: Int? = null,
+    ): ItemsListResponse
+
     @POST("items")
     suspend fun addItem(@Body newItem: NewItemDto)
 

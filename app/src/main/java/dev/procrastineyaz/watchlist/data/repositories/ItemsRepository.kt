@@ -12,6 +12,8 @@ import dev.procrastineyaz.watchlist.data.mappers.toItem
 import dev.procrastineyaz.watchlist.data.remote.ItemsAPIService
 import dev.procrastineyaz.watchlist.data.remote.dto.NewItemDto
 import dev.procrastineyaz.watchlist.data.remote.dto.UserItemPropsDto
+import dev.procrastineyaz.watchlist.data.repositories.sources.ItemsSourceFactory
+import dev.procrastineyaz.watchlist.data.repositories.sources.SubscriptionItemsDataSource
 import dev.procrastineyaz.watchlist.data.util.MainThreadExecutor
 import dev.procrastineyaz.watchlist.data.util.wrapInResultFlow
 import io.objectbox.android.ObjectBoxDataSource
@@ -35,6 +37,18 @@ class ItemsRepository(
             .setInitialLoadKey(1)
             .setBoundaryCallback(boundaryCallback)
             .build()
+    }
+
+    fun getSubscriptionItems(userId: Long, itemsQuery: ItemsQuery, scope: CoroutineScope): LiveData<PagedList<Item>> {
+        val factory = ItemsSourceFactory { SubscriptionItemsDataSource(scope, userId, itemsQuery, itemsAPIService) }
+        return LivePagedListBuilder(
+            factory,
+            PagedList.Config.Builder()
+                .setPageSize(20)
+                .setInitialLoadSizeHint(20)
+                .setEnablePlaceholders(false)
+                .build()
+        ).setInitialLoadKey(1).build()
     }
 
     fun searchItems(

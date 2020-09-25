@@ -1,5 +1,7 @@
 package dev.procrastineyaz.watchlist.data.remote.dto
 
+import dev.procrastineyaz.watchlist.data.dto.Item
+import dev.procrastineyaz.watchlist.data.mappers.toItem
 import java.util.*
 
 data class RemoteItem(
@@ -40,10 +42,14 @@ data class NewItemDto(
 )
 
 data class ItemsListResponse(
-    override val items: List<RemoteItem>,
+    val items: List<RemoteItem>,
     override val count: Int,
     override val itemsPerPage: Int,
-) : IPageableResponse<RemoteItem>
+) : IPageableResponse<Item> {
+    override fun getMappedItems(): List<Item> {
+        return items.map { it.toItem() }
+    }
+}
 
 data class UserItemPropsDto(
     val rating: Float? = null,

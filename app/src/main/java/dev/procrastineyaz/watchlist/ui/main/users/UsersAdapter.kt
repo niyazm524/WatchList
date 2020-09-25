@@ -29,16 +29,17 @@ class UsersAdapter : PagedListAdapter<SubscribeUser, UserViewHolder>(UsersDiffCa
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        getItem(position)?.also { holder.bindTo(it, onUserClickListener) } ?: holder.clear()
+        getItem(position)?.also { holder.bindTo(it, onUserClickListener, onSubscribeTo) } ?: holder.clear()
     }
 }
 
 class UserViewHolder(override val containerView: View, val binding: ItemUserBinding) :
     RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-    fun bindTo(user: SubscribeUser, listener: UserClickListener?) {
+    fun bindTo(user: SubscribeUser, listener: UserClickListener?, actionListener: UserClickListener?) {
         binding.user = user
         binding.listener = listener
+        binding.actionListener = actionListener
         if(user.avatarUrl != null) {
             iv_avatar.load(user.avatarUrl) {
                 transformations(CircleCropTransformation())

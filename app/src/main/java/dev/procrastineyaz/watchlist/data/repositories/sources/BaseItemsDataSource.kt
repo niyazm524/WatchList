@@ -36,7 +36,7 @@ abstract class BaseItemsDataSource<V>(
                     withContext(Dispatchers.IO) { fetchItems(1, params.requestedLoadSize) }
                 _networkState?.postValue(NetworkState.Success)
                 callback.onResult(
-                    response.items,
+                    response.getMappedItems(),
                     0,
                     response.count,
                     null,
@@ -63,7 +63,7 @@ abstract class BaseItemsDataSource<V>(
                     withContext(Dispatchers.IO) { fetchItems(key, params.requestedLoadSize) }
                 _networkState?.postValue(NetworkState.Success)
                 callback.onResult(
-                    response.items,
+                    response.getMappedItems(),
                     if (response.pagesCount() > key) key + 1 else null
                 )
             } catch (err: Throwable) {

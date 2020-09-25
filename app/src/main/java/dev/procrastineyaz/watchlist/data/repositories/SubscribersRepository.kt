@@ -8,6 +8,7 @@ import dev.procrastineyaz.watchlist.data.remote.SubscribersAPIService
 import dev.procrastineyaz.watchlist.data.repositories.sources.ItemsSourceFactory
 import dev.procrastineyaz.watchlist.data.repositories.sources.SubscribersDataSource
 import dev.procrastineyaz.watchlist.data.repositories.sources.SubscriptionsDataSource
+import dev.procrastineyaz.watchlist.data.util.wrapInResultFlow
 import kotlinx.coroutines.CoroutineScope
 
 class SubscribersRepository(private val subscribersApi: SubscribersAPIService) {
@@ -28,4 +29,11 @@ class SubscribersRepository(private val subscribersApi: SubscribersAPIService) {
         ).setInitialLoadKey(1).build()
         return PagedItemsResult(pagedList, factory.isLoading, factory.networkState)
     }
+
+    fun subscribe(toUser: String) = wrapInResultFlow { subscribersApi.subscribe(toUser) }
+
+    fun unsubscribe(fromUserId: Long) = wrapInResultFlow { subscribersApi.unsubscribe(fromUserId) }
+
+    fun approveSubscriber(subId: Long) = wrapInResultFlow { subscribersApi.approveSubscriber(subId) }
+
 }

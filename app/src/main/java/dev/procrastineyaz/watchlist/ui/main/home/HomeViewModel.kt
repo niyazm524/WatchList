@@ -9,13 +9,17 @@ import dev.procrastineyaz.watchlist.data.dto.ItemsQuery
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.data.repositories.ItemsRepository
 import dev.procrastineyaz.watchlist.ui.dto.AddItemModalState
+import dev.procrastineyaz.watchlist.ui.dto.ItemsProviders
 import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapterProvider
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 
 @ExperimentalCoroutinesApi
-class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
+class HomeViewModel(
+    private val itemsRepository: ItemsRepository,
+    private val itemProvider: ItemsProviders
+) : ViewModel(),
     ItemsAdapterProvider {
 
     private var currentTab: SeenParameter = SeenParameter.SEEN
@@ -28,6 +32,7 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
     private val searchPhrase: String? = null
     private var category: Category = Category.UNKNOWN
     private var fetchingJob: Job? = null
+    var subscriptionUserId: Long? = null
 
     fun setCurrentTab(tab: SeenParameter) {
         currentTab = tab
@@ -54,7 +59,14 @@ class HomeViewModel(private val itemsRepository: ItemsRepository) : ViewModel(),
         seen: SeenParameter,
         toLiveData: MutableLiveData<PagedList<Item>>
     ) {
-        itemsRepository.getItems(ItemsQuery(category, seen, searchPhrase), viewModelScope)
+        val query = ItemsQuery(category, seen, searchPhrase)
+        val subId = subscriptionUserId
+        val liveData: LiveData<PagedList<Item>> = when {
+            itemProvider == ItemsProviders.HomeItemsVM -> itemsRepository.getItems(query, viewModelScope)
+            subId != null -> itemsRepository.getSubscriptionItems(subId, query, viewModelScope)
+            else -> return
+        }
+        liveData
             .asFlow()
             .flowOn(Dispatchers.IO)
             .collectLatest {

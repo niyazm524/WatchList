@@ -64,9 +64,21 @@
         android:id="@+id/navigation_users"
         android:name="dev.procrastineyaz.watchlist.ui.main.users.UsersFragment"
         android:label="Users"
-        tools:layout="@layout/fragment_users" >
+        tools:layout="@layout/fragment_subscriptions" >
         <argument
             android:name="userType"
             app:argType="dev.procrastineyaz.watchlist.data.dto.UserType" />
+        <action
+            android:id="@+id/action_navigation_users_to_user_view"
+            app:destination="@id/navigation_user_view" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_user_view"
+        android:name="dev.procrastineyaz.watchlist.ui.main.user_view.UserViewFragment"
+        android:label="fragment_user_view"
+        tools:layout="@layout/fragment_user_view" >
+        <argument
+            android:name="user"
+            app:argType="dev.procrastineyaz.watchlist.data.dto.SubscribeUser" />
     </fragment>
 </navigation>

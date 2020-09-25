@@ -6,4 +6,5 @@ val repositoriesModule = module {
     single { UsersRepository(get()) }
     single { ItemsRepository(get(), get()) }
     single { TrendsRepository(get()) }
+    single { SubscribersRepository(get()) }
 }

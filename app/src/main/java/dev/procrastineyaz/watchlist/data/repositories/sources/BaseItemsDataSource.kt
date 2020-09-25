@@ -2,18 +2,16 @@ package dev.procrastineyaz.watchlist.data.repositories.sources
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
-import dev.procrastineyaz.watchlist.data.dto.Item
 import dev.procrastineyaz.watchlist.data.dto.NetworkState
-import dev.procrastineyaz.watchlist.data.mappers.toItem
 import dev.procrastineyaz.watchlist.data.remote.dto.IPageableResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class BaseItemsDataSource(
+abstract class BaseItemsDataSource<V>(
     protected val scope: CoroutineScope
-) : PageKeyedDataSource<Int, Item>() {
+) : PageKeyedDataSource<Int, V>() {
     var _isLoading: MutableLiveData<Boolean>? = null
     var _networkState: MutableLiveData<NetworkState>? = null
     protected var inProcess: Boolean = false
@@ -26,7 +24,7 @@ abstract class BaseItemsDataSource(
 
     override fun loadInitial(
         params: LoadInitialParams<Int>,
-        callback: LoadInitialCallback<Int, Item>
+        callback: LoadInitialCallback<Int, V>
     ) {
         if (inProcess) {
             return
@@ -38,7 +36,7 @@ abstract class BaseItemsDataSource(
                     withContext(Dispatchers.IO) { fetchItems(1, params.requestedLoadSize) }
                 _networkState?.postValue(NetworkState.Success)
                 callback.onResult(
-                    response.items.map { it.toItem() },
+                    response.items,
                     0,
                     response.count,
                     null,
@@ -52,7 +50,7 @@ abstract class BaseItemsDataSource(
         }
     }
 
-    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Item>) {
+    override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, V>) {
         val key: Int? = params.key
         if (inProcess || key == null) {
             return
@@ -65,7 +63,7 @@ abstract class BaseItemsDataSource(
                     withContext(Dispatchers.IO) { fetchItems(key, params.requestedLoadSize) }
                 _networkState?.postValue(NetworkState.Success)
                 callback.onResult(
-                    response.items.map { it.toItem() },
+                    response.items,
                     if (response.pagesCount() > key) key + 1 else null
                 )
             } catch (err: Throwable) {
@@ -76,7 +74,7 @@ abstract class BaseItemsDataSource(
         }
     }
 
-    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Item>) {}
+    override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, V>) {}
 
-    abstract suspend fun fetchItems(page: Int, itemsPerPage: Int): IPageableResponse
+    abstract suspend fun fetchItems(page: Int, itemsPerPage: Int): IPageableResponse<V>
 }

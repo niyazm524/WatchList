@@ -6,25 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import coil.load
 import coil.transform.CircleCropTransformation
 import dev.procrastineyaz.watchlist.R
+import dev.procrastineyaz.watchlist.data.dto.UserType
 import dev.procrastineyaz.watchlist.databinding.FragmentMoreBinding
+import dev.procrastineyaz.watchlist.services.TokenService
 import dev.procrastineyaz.watchlist.ui.login.LoginActivity
 import kotlinx.android.synthetic.main.fragment_more.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MoreFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MoreFragment : Fragment() {
+    private val tokenService: TokenService by inject()
     private val vm: MoreViewModel by viewModel()
 
     override fun onCreateView(
@@ -33,6 +29,7 @@ class MoreFragment : Fragment() {
     ): View? {
         val binding = FragmentMoreBinding.inflate(inflater, container, false)
         binding.vm = vm
+        binding.username = tokenService.username
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
@@ -48,25 +45,18 @@ class MoreFragment : Fragment() {
         iv_avatar.load(R.drawable.sharingan) {
             transformations(CircleCropTransformation())
         }
+
+        linearLayout_subscriptions.setOnClickListener {
+            openUsersFragment(UserType.Subscription)
+        }
+
+        linearLayout_subscribers.setOnClickListener {
+            openUsersFragment(UserType.Subscriber)
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MoreFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MoreFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun openUsersFragment(userType: UserType) {
+        val action = MoreFragmentDirections.actionNavigationMoreToUsers(userType)
+        findNavController().navigate(action)
     }
 }

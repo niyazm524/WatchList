@@ -8,7 +8,6 @@ import dev.procrastineyaz.watchlist.data.repositories.UsersRepository
 import dev.procrastineyaz.watchlist.services.TokenService
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class LoginViewModel(
     private val usersRepository: UsersRepository,
@@ -35,6 +34,7 @@ class LoginViewModel(
             _progressState.postValue(LoginProgressState.Loading)
             val loginToken = usersRepository.login(login, password)
             tokenService.token = loginToken.token
+            tokenService.username = loginToken.username
             delay(100)
             _progressState.postValue(LoginProgressState.Success)
         } catch (e: Exception) {

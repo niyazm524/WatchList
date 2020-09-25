@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="vm"
             type="dev.procrastineyaz.watchlist.ui.main.more.MoreViewModel" />
+        <variable
+            name="username"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -61,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:gravity="center_horizontal"
-            android:text="kelte4"
+            android:text="@{username}"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textIsSelectable="true"
             app:layout_constraintEnd_toEndOf="@+id/iv_avatar"

@@ -33,7 +33,11 @@
         android:id="@+id/navigation_more"
         android:name="dev.procrastineyaz.watchlist.ui.main.more.MoreFragment"
         android:label="@string/title_more"
-        tools:layout="@layout/fragment_more" />
+        tools:layout="@layout/fragment_more" >
+        <action
+            android:id="@+id/action_navigation_more_to_users"
+            app:destination="@id/navigation_users" />
+    </fragment>
     <dialog
         android:id="@+id/navigation_add_item"
         android:name="dev.procrastineyaz.watchlist.ui.main.common.AddItemDialogFragment"
@@ -55,5 +59,14 @@
         <argument
             android:name="item"
             app:argType="dev.procrastineyaz.watchlist.data.dto.Item" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_users"
+        android:name="dev.procrastineyaz.watchlist.ui.main.users.UsersFragment"
+        android:label="Users"
+        tools:layout="@layout/fragment_users" >
+        <argument
+            android:name="userType"
+            app:argType="dev.procrastineyaz.watchlist.data.dto.UserType" />
     </fragment>
 </navigation>

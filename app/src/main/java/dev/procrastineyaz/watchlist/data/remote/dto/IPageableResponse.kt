@@ -2,8 +2,8 @@ package dev.procrastineyaz.watchlist.data.remote.dto
 
 import kotlin.math.ceil
 
-interface IPageableResponse {
-    val items: List<RemoteItem>
+interface IPageableResponse<T> {
+    val items: List<T>
     val count: Int
     val itemsPerPage: Int
 

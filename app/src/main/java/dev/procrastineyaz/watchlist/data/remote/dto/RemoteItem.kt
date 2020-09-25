@@ -43,7 +43,7 @@ data class ItemsListResponse(
     override val items: List<RemoteItem>,
     override val count: Int,
     override val itemsPerPage: Int,
-) : IPageableResponse
+) : IPageableResponse<RemoteItem>
 
 data class UserItemPropsDto(
     val rating: Float? = null,

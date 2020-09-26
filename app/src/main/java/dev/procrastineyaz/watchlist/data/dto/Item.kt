@@ -18,7 +18,9 @@ data class Item(
     val note: String?,
     val seen: Boolean?,
     val posterUrl: String?
-) : Parcelable
+) : Parcelable {
+    fun getCategoryName() = Category.fromId(categoryId).getName()
+}
 
 data class ItemsQuery(
     val category: Category,

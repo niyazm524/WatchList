@@ -43,26 +43,7 @@ class MovieViewHolder(override val containerView: View) :
         if (onItemClickListener != null) {
             cv_item_root.setOnClickListener { onItemClickListener(item, containerView) }
         }
-        tv_title.text = item.nameRu
-        tv_title_global.text = item.nameEn
-        if (item.rating.isNullOrEmpty()) {
-            tv_rating.visibility = View.INVISIBLE
-        } else {
-            tv_rating.visibility = View.VISIBLE
-            tv_rating.text = item.rating
-        }
-
-        if (item.note != null) {
-            tv_note.text = "\uD83D\uDCDD\t" + item.note
-        } else {
-            tv_note.text = item.description
-        }
-
-        iv_poster.load(item.posterUrl) {
-            placeholder(R.drawable.no_movie_poster)
-            memoryCacheKey(item.id.toString())
-            crossfade(true)
-        }
+        bindToItem(item)
     }
 
     fun clear() {
@@ -72,6 +53,30 @@ class MovieViewHolder(override val containerView: View) :
         cv_item_root.setOnClickListener(null)
         tv_title_global.text = ""
         tv_title.text = "Фильм загружается..."
+    }
+}
+
+fun LayoutContainer.bindToItem(item: Item) {
+    tv_title.text = item.nameRu
+    tv_title_global.text = item.nameEn
+    if (item.rating.isNullOrEmpty()) {
+        tv_rating.visibility = View.INVISIBLE
+    } else {
+        tv_rating.visibility = View.VISIBLE
+        tv_rating.text = item.rating
+    }
+
+    if (item.note != null) {
+        tv_note.text = "\uD83D\uDCDD\t" + item.note
+    } else {
+        tv_note.text = item.description
+    }
+
+    iv_poster.load(item.posterUrl) {
+        placeholder(R.drawable.no_movie_poster)
+        error(R.drawable.no_movie_poster)
+        memoryCacheKey(item.id.toString())
+        crossfade(true)
     }
 }
 

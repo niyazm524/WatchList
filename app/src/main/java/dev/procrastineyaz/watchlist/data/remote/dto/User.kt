@@ -6,6 +6,8 @@ data class RemoteUser(
     val email: String
 )
 
+data class UserPublicInfo(val id: String, val username: String, val posterUrl: String? = null)
+
 data class UserCredentials(val username: String, val password: String)
 
 data class NewUserDto(val username: String, val email: String, val password: String)

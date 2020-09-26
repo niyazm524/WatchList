@@ -7,4 +7,5 @@ val repositoriesModule = module {
     single { ItemsRepository(get(), get()) }
     single { TrendsRepository(get()) }
     single { SubscribersRepository(get()) }
+    single { FeedRepository(get()) }
 }

@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">WatchList</string>
-    <string name="title_home">Home</string>
-    <string name="title_feed">Feed</string>
-    <string name="title_trends">Trends</string>
-    <string name="title_more">More</string>
+    <string name="title_home">Мои</string>
+    <string name="title_feed">Лента</string>
+    <string name="title_trends">Тренды</string>
+    <string name="title_more">Ещё</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

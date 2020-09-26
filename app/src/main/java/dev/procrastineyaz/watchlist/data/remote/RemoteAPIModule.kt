@@ -36,4 +36,5 @@ val remoteAPIModule = module {
     single<ItemsAPIService> { get<Retrofit>().create(ItemsAPIService::class.java) }
     single<TrendsAPIService> { get<Retrofit>().create(TrendsAPIService::class.java) }
     single<SubscribersAPIService> { get<Retrofit>().create(SubscribersAPIService::class.java) }
+    single<FeedAPIService> { get<Retrofit>().create(FeedAPIService::class.java) }
 }

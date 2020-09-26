@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.snackbar.Snackbar
+import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.Result
 import dev.procrastineyaz.watchlist.databinding.FragmentItemDetailsBinding
 import kotlinx.android.synthetic.main.fragment_item_details.*
@@ -43,6 +44,8 @@ class ItemDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         iv_poster.load(args.item.posterUrl) {
+            placeholder(R.drawable.no_movie_poster)
+            error(R.drawable.no_movie_poster)
             transformations(RoundedCornersTransformation(12f))
         }
 

@@ -15,6 +15,13 @@ import androidx.annotation.Keep
         else -> "all"
     }
 
+    fun getName() = when(this) {
+        FILM -> "фильм"
+        SERIES -> "сериал"
+        ANIME -> "аниме"
+        UNKNOWN -> "[неизвестная категория]"
+    }
+
     companion object {
         fun fromId(id: Int): Category = when(id) {
             0 -> FILM

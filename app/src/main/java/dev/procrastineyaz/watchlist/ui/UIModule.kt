@@ -15,7 +15,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val uiModule = module {
-    viewModel { FeedViewModel() }
+    viewModel { FeedViewModel(get()) }
     viewModel { HomeViewModel(get()) }
     viewModel { UserViewViewModel(get()) }
     viewModel { TrendsViewModel(get()) }

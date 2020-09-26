@@ -22,12 +22,13 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class MoreFragment : Fragment() {
     private val tokenService: TokenService by inject()
     private val vm: MoreViewModel by viewModel()
+    private lateinit var binding: FragmentMoreBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentMoreBinding.inflate(inflater, container, false)
+        binding = FragmentMoreBinding.inflate(inflater, container, false)
         binding.vm = vm
         binding.username = tokenService.username
         binding.lifecycleOwner = viewLifecycleOwner
@@ -42,6 +43,10 @@ class MoreFragment : Fragment() {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             })
         }
+        vm.userData.observe(viewLifecycleOwner) { user ->
+            user?.let { binding.user = it }
+        }
+        vm.getUserData()
         iv_avatar.load(R.drawable.sharingan) {
             transformations(CircleCropTransformation())
         }

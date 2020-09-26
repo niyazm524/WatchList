@@ -19,7 +19,7 @@ val uiModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { UserViewViewModel(get()) }
     viewModel { TrendsViewModel(get()) }
-    viewModel { MoreViewModel(get()) }
+    viewModel { MoreViewModel(get(), get()) }
     viewModel { UsersViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { RegisterViewModel(get()) }

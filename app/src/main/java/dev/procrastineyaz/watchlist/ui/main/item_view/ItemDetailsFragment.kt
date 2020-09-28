@@ -7,12 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.google.android.material.snackbar.Snackbar
 import dev.procrastineyaz.watchlist.R
+import dev.procrastineyaz.watchlist.data.dto.Item
 import dev.procrastineyaz.watchlist.data.dto.Result
 import dev.procrastineyaz.watchlist.databinding.FragmentItemDetailsBinding
 import kotlinx.android.synthetic.main.fragment_item_details.*
@@ -69,6 +71,8 @@ class ItemDetailsFragment : Fragment() {
         if (!args.readonly) btn_remove.setOnClickListener {
             showRemoveSnackbar()
         }
+
+        btn_share.setOnClickListener { shareItem(args.item) }
     }
 
     private fun showRemoveSnackbar() {
@@ -95,14 +99,19 @@ class ItemDetailsFragment : Fragment() {
                 48f,
                 resources.displayMetrics
             )
-//            view.layoutParams = (view.layoutParams as ViewGroup.MarginLayoutParams).let {
-//
-//                it.setMargins(4, 0, 4, bottomMargin)
-//                it
-//            }
             view.translationY = -bottomMargin
             show()
         }
+    }
+
+    private fun shareItem(item: Item) {
+        ShareCompat.IntentBuilder.from(requireActivity())
+            .setText("""Рекомендую посмотреть ${item.getCategoryName()} ${item.nameRu}!
+                |
+                |Отправлено из WatchList""".trimMargin())
+            .setType("text/plain")
+            .setChooserTitle("Поделиться")
+            .startChooser()
     }
 
     override fun onPause() {

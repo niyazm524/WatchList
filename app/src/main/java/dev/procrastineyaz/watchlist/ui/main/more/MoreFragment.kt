@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -40,7 +41,7 @@ class MoreFragment : Fragment() {
         vm.isLogout.observe(viewLifecycleOwner) {
             if(it == false) { return@observe }
             startActivity(Intent(activity, LoginActivity::class.java).apply {
-                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             })
         }
         vm.userData.observe(viewLifecycleOwner) { user ->
@@ -57,6 +58,22 @@ class MoreFragment : Fragment() {
 
         linearLayout_subscribers.setOnClickListener {
             openUsersFragment(UserType.Subscriber)
+        }
+
+        btn_action_share_app.setOnClickListener {
+            Toast.makeText(
+                context,
+                "Отправка статистики и ссылки на приглашение будет реализована позже",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+
+        iv_avatar.setOnClickListener {
+            Toast.makeText(
+                context,
+                "Функция смены аватара появится в следующей версии",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 

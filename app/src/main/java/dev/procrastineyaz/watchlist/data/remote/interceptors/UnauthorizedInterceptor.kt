@@ -22,8 +22,7 @@ class UnauthorizedInterceptor(
             Handler(Looper.getMainLooper()).post {
                 Toast.makeText(context, "Вы не авторизованы", Toast.LENGTH_SHORT).show()
                 context.startActivity(Intent(context, LoginActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                 })
             }
         }

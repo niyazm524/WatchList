@@ -26,4 +26,5 @@
     <string name="no_items_message">В этой категории ещё нет элементов</string>
     <string name="string_note">Заметка</string>
     <string name="avatar_description">avatar</string>
+    <string name="stats_feature_comment">/* Здесь появится статистика пользователя */</string>
 </resources>

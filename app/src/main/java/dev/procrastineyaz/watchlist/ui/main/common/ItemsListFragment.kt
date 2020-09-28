@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.ui.main.movies
+package dev.procrastineyaz.watchlist.ui.main.common
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,6 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import dev.procrastineyaz.watchlist.R
 import dev.procrastineyaz.watchlist.data.dto.SeenParameter
 import dev.procrastineyaz.watchlist.ui.dto.ItemsProviders
-import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapter
-import dev.procrastineyaz.watchlist.ui.main.common.ItemsAdapterProvider
 import dev.procrastineyaz.watchlist.ui.main.home.HomeViewModel
 import dev.procrastineyaz.watchlist.ui.main.user_view.UserViewViewModel
 import kotlinx.android.synthetic.main.items_list_fragment.*

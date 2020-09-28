@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.data.repositories
+package dev.procrastineyaz.watchlist.data.repositories.misc
 
 import androidx.paging.PagedList
 import dev.procrastineyaz.watchlist.data.dto.Item

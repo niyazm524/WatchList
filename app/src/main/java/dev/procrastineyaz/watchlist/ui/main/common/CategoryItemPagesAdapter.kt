@@ -3,7 +3,6 @@ package dev.procrastineyaz.watchlist.ui.main.common
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import dev.procrastineyaz.watchlist.ui.dto.ItemsProviders
-import dev.procrastineyaz.watchlist.ui.main.movies.ItemsListFragment
 
 class CategoryItemPagesAdapter(
     fragment: Fragment,

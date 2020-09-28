@@ -1,8 +1,11 @@
 package dev.procrastineyaz.watchlist.ui.main.common
 
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +22,7 @@ class ItemsAdapter : PagedListAdapter<Item, MovieViewHolder>(MoviesDiffCallback(
     var onItemClickListener: ItemClickListener? = null
 
     init {
-        setHasStableIds(true)
+        //setHasStableIds(true)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
@@ -59,11 +62,18 @@ class MovieViewHolder(override val containerView: View) :
 fun LayoutContainer.bindToItem(item: Item) {
     tv_title.text = item.nameRu
     tv_title_global.text = item.nameEn
-    if (item.rating.isNullOrEmpty()) {
+    val rating = item.rating ?: ""
+    if (rating.isEmpty()) {
+        tv_rating.backgroundTintList
         tv_rating.visibility = View.INVISIBLE
     } else {
+        val hue = rating.toIntOrNull()?.let {
+            (it / 10f * 90).coerceIn(0f..90f)
+        } ?: 122f
+        val color = Color.HSVToColor(floatArrayOf(hue, .95f, .8f))
+        ViewCompat.setBackgroundTintList(tv_rating, ColorStateList.valueOf(color))
         tv_rating.visibility = View.VISIBLE
-        tv_rating.text = item.rating
+        tv_rating.text = rating
     }
 
     if (item.note != null) {

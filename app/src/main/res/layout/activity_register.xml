@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="dev.procrastineyaz.watchlist.data.dto.Result"/>
         <variable name="viewModel" type="dev.procrastineyaz.watchlist.ui.register.RegisterViewModel"/>
     </data>
 
@@ -124,7 +125,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewModel.result.isLoading ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@+id/btn_register"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +137,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="@string/register_button_text"
-            android:enabled="@{!viewModel.isLoading}"
+            android:enabled="@{!viewModel.result.isLoading}"
             android:onClick="@{() -> viewModel.onRegisterBtnClick()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1,6"
@@ -145,15 +146,5 @@
 
         </com.google.android.material.button.MaterialButton>
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.username}"
-            app:layout_constraintBottom_toTopOf="@+id/progressBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/til_password_repeat"
-            app:layout_constraintVertical_bias="0.07999998" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -4,25 +4,24 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.procrastineyaz.watchlist.data.dto.Result
 import dev.procrastineyaz.watchlist.data.repositories.UsersRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.contracts.contract
+
+typealias Credentials = Pair<String, String>
 
 class RegisterViewModel(
     private val usersRepository: UsersRepository
 ) : ViewModel() {
 
-    val username = MutableLiveData<String>("")
-    val email = MutableLiveData<String>("")
-    val password = MutableLiveData<String>("")
-    val passwordRepeat = MutableLiveData<String>("")
+    val username = MutableLiveData("")
+    val email = MutableLiveData("")
+    val password = MutableLiveData("")
+    val passwordRepeat = MutableLiveData("")
 
-    private val _isLoading = MutableLiveData<Boolean>(false)
-    val isLoading: LiveData<Boolean> = _isLoading
-
-    private val _credentialsIfRegistered = MutableLiveData<Pair<String, String>?>(null)
-    val credentialsIfRegistered: LiveData<Pair<String, String>?> = _credentialsIfRegistered
+    private val _result = MutableLiveData<Result<Credentials, Throwable>>()
+    val result: LiveData<Result<Credentials, Throwable>> = _result
 
     private fun validateInput(): Boolean {
         return !username.value.isNullOrEmpty() && !email.value.isNullOrEmpty()
@@ -41,13 +40,13 @@ class RegisterViewModel(
         val username = requireNotNull(username.value)
         val email = requireNotNull(email.value)
         val password = requireNotNull(password.value)
-        _isLoading.postValue(true)
+        _result.postValue(Result.Loading)
         try {
             usersRepository.register(username, email, password)
             delay(100)
-            _credentialsIfRegistered.postValue(username to password)
-        } finally {
-            _isLoading.postValue(false)
+            _result.postValue(Result.Success(username to password))
+        } catch (err: Throwable) {
+            _result.postValue(Result.Error(err))
         }
     }
 

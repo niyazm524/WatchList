@@ -1,4 +1,4 @@
-package dev.procrastineyaz.watchlist.data.repositories
+package dev.procrastineyaz.watchlist.data.repositories.sources
 
 import android.util.Log
 import androidx.paging.PageKeyedDataSource

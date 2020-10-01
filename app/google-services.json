@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "225855803310",
+    "firebase_url": "https://watchlist-94487.firebaseio.com",
+    "project_id": "watchlist-94487",
+    "storage_bucket": "watchlist-94487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225855803310:android:bc63bcfad7843775e1823f",
+        "android_client_info": {
+          "package_name": "dev.procrastineyaz.watchlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225855803310-v8h0njb10peoma50fuhdpo071nn9c38t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA0A1g1G5Pc170RUzLtzXINKPxQE3YKVcM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225855803310-v8h0njb10peoma50fuhdpo071nn9c38t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

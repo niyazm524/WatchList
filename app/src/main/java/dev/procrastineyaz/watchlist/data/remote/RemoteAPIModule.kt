@@ -25,8 +25,8 @@ val remoteAPIModule = module {
 
     single<Retrofit> {
         Retrofit.Builder()
-            .baseUrl("http://192.168.2.51:3000/api/")
-//            .baseUrl("http://192.168.0.28:3000/api/")
+//            .baseUrl("http://10.17.35.239:3000/api/")
+            .baseUrl("http://192.168.0.28:3000/api/")
 //            .baseUrl("https://watchlist.procrastineyaz.dev/api/")
             .client(get<OkHttpClient>())
             .addConverterFactory(get<GsonConverterFactory>())
